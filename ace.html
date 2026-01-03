@@ -8,7 +8,7 @@
   <style>
     body {
       margin: 0;
-      background: #070a12;
+      background: radial-gradient(circle at top, #0b1020, #070a12);
       color: rgba(255,255,255,0.92);
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
@@ -17,27 +17,29 @@
       max-width: 900px;
       margin: 40px auto;
       padding: 24px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
     }
 
     h1 {
-      margin: 0 0 4px 0;
+      margin: 0;
       font-size: 22px;
     }
 
-    p.sub {
-      margin: 0 0 16px 0;
-      opacity: 0.75;
+    .sub {
+      margin: 4px 0 16px 0;
+      opacity: 0.7;
+      font-size: 14px;
     }
 
     #ace-messages {
       height: 360px;
       overflow-y: auto;
-      padding: 12px;
-      background: rgba(0,0,0,0.35);
-      border-radius: 8px;
-      margin-bottom: 12px;
+      padding: 16px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 10px;
+      margin-bottom: 14px;
     }
 
     .turn {
@@ -48,21 +50,40 @@
       text-align: right;
       color: #2dd4ff;
       margin-bottom: 6px;
+      font-size: 14px;
     }
 
     .ace-msg {
-      color: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.08);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    form {
+      display: flex;
+      gap: 8px;
     }
 
     input {
-      width: 100%;
+      flex: 1;
       padding: 12px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: none;
       outline: none;
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.12);
       color: #fff;
       font-size: 14px;
+    }
+
+    button {
+      padding: 0 18px;
+      border-radius: 10px;
+      border: none;
+      background: #2dd4ff;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
     }
 
     footer {
@@ -77,7 +98,7 @@
 <body>
   <div class="container">
     <h1>ACE</h1>
-    <p class="sub">Authoritative Company Explainer</p>
+    <div class="sub">Authoritative Company Explainer</div>
 
     <div id="ace-messages">
       <div class="turn">
@@ -87,11 +108,10 @@
       </div>
     </div>
 
-    <input
-      id="ace-input"
-      type="text"
-      placeholder="Type a question and press Enter"
-    />
+    <form id="ace-form">
+      <input id="ace-input" type="text" placeholder="Ask a question" autocomplete="off" />
+      <button type="submit">Send</button>
+    </form>
 
     <footer>
       © Wynergy Fibre Solutions Ltd. Governed disclosure.
@@ -99,25 +119,16 @@
   </div>
 
   <script>
-    /* =========================================
-       ACE v1.1 — Governed, Deterministic
-       Timeline + Intent Carry-Forward
-       ========================================= */
-
     let failureCount = 0;
     let lastIntent = null;
 
     function normaliseInput(text) {
-      return text
-        .toLowerCase()
-        .replace(/[^\w\s]/g, "")
-        .replace(/\s+/g, " ")
-        .trim();
+      return text.toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, " ").trim();
     }
 
     function detectMisconduct(text) {
       const blocked = ["stupid", "idiot", "dumb", "moron", "fuck", "shit", "cunt"];
-      return blocked.some(word => text.includes(word));
+      return blocked.some(w => text.includes(w));
     }
 
     function classifyIntent(text) {
@@ -128,58 +139,67 @@
     }
 
     function isFollowUp(text) {
-      return (
-        text.includes("this") ||
-        text.includes("that") ||
-        text.includes("they") ||
-        text.includes("what does this mean")
-      );
+      return text.includes("this") || text.includes("that") || text.includes("they");
     }
 
-    function aceRespond(userInput) {
-      const input = normaliseInput(userInput);
+    function aceRespond(inputRaw) {
+      const input = normaliseInput(inputRaw);
 
-      if (!input) {
-        return "Please enter a question about WFSL, engagement, or compliance.";
-      }
+      if (!input) return "Please enter a question about WFSL, engagement, or compliance.";
 
       if (detectMisconduct(input)) {
-        failureCount++;
-        return "This interface operates under professional and respectful use. Ask about WFSL, engagement, or compliance.";
+        return "This interface operates under professional and respectful use.";
       }
 
       let intent = classifyIntent(input);
-
-      if (intent === "unknown" && isFollowUp(input) && lastIntent) {
-        intent = lastIntent;
-      }
+      if (intent === "unknown" && isFollowUp(input) && lastIntent) intent = lastIntent;
 
       if (intent === "wfsl") {
         lastIntent = "wfsl";
-        failureCount = 0;
         return "WFSL designs and operates governance-first infrastructure systems for regulated and compliance-sensitive environments.";
       }
 
       if (intent === "engagement") {
         lastIntent = "engagement";
-        failureCount = 0;
         return "Engagement is structured and governed. Architecture and outcomes are shared. Core systems are disclosed selectively under NDA.";
       }
 
       if (intent === "compliance") {
         lastIntent = "compliance";
-        failureCount = 0;
-        return "Compliance prioritises auditability, enforcement, traceability, and operational control across systems.";
+        return "Compliance prioritises auditability, enforcement, traceability, and operational control.";
       }
 
-      failureCount++;
-      if (failureCount === 1) {
-        return "I did not understand that. Ask about WFSL, engagement, or compliance.";
-      }
-      if (failureCount === 2) {
-        return "Example questions: What does WFSL do? How does engagement work? What compliance standards apply?";
-      }
-      return "Please use the navigation or return home for structured information.";
+      return "I did not understand that. Ask about WFSL, engagement, or compliance.";
     }
 
-    function appendTurn(
+    function appendTurn(userText, aceText) {
+      const box = document.getElementById("ace-messages");
+
+      const turn = document.createElement("div");
+      turn.className = "turn";
+
+      const user = document.createElement("div");
+      user.className = "user-msg";
+      user.textContent = userText;
+
+      const ace = document.createElement("div");
+      ace.className = "ace-msg";
+      ace.textContent = aceText;
+
+      turn.appendChild(user);
+      turn.appendChild(ace);
+      box.appendChild(turn);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    document.getElementById("ace-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const input = document.getElementById("ace-input");
+      const text = input.value;
+      if (!text) return;
+      input.value = "";
+      appendTurn(text, aceRespond(text));
+    });
+  </script>
+</body>
+</html>
