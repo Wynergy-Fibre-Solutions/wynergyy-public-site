@@ -1,67 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ACE — Authoritative Company Explainer</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-
-<body>
-<header class="site-header">
-  <div class="header-inner">
-    <div class="brand">
-      <img src="assets/wfsl-logo.jpg" alt="WFSL Logo" class="wfsl-logo" />
-      <div class="brand-text">
-        <h1>ACE</h1>
-        <p class="tagline">Authoritative Company Explainer</p>
-      </div>
-    </div>
-
-    <nav class="top-nav" aria-label="Primary">
-      <a href="./index.html">Home</a>
-      <a class="active" href="./ace.html" aria-current="page">ACE</a>
-      <a href="./engage.html">Engage</a>
-      <a href="./compliance.html">Compliance</a>
-    </nav>
-  </div>
-</header>
-
-<main class="page">
-  <section class="card card-wide">
-    <div class="card-head">
-      <div>
-        <h2>Ask ACE</h2>
-        <p class="muted">No tracking. No storage. Informational only. Use Engage for professional contact.</p>
-      </div>
-
-      <div class="card-actions">
-        <button id="downloadBtn" class="btn secondary" disabled>Download transcript</button>
-        <a class="btn" href="./engage.html">Engage professionally</a>
-      </div>
-    </div>
-
-    <div id="chatLog" class="chat-log" aria-live="polite"></div>
-
-    <div class="chat-input">
-      <input id="userInput" type="text" placeholder="Type your question and press Enter…" autocomplete="off" />
-    </div>
-
-    <div id="status" class="status muted"></div>
-
-    <div class="footer-row">
-      <a class="link" href="./index.html">Return home</a>
-      <a class="link" href="./compliance.html">Privacy and compliance</a>
-    </div>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="footer-inner">
-    © Wynergy Fibre Solutions Ltd. Governed disclosure.
-  </div>
-</footer>
-
 <script>
   const chatLog = document.getElementById("chatLog");
   const userInput = document.getElementById("userInput");
@@ -69,37 +5,37 @@
   const downloadBtn = document.getElementById("downloadBtn");
 
   const transcript = [];
+  let lastTopic = null;
+
   const rules = [
     {
+      keys: ["hello", "hi", "hey"],
+      reply: "Hello. I can explain what WFSL does, how engagement works, or where to find compliance information."
+    },
+    {
+      keys: ["yes", "ok", "okay"],
+      reply: "Understood. Please ask a specific question such as “what is wfsl”, “how do I engage”, or “gdpr”."
+    },
+    {
       keys: ["what is wfsl", "what do you do", "who are you", "what is wynergy"],
-      reply:
-        "Wynergy Fibre Solutions Ltd is a UK fibre infrastructure contractor and workforce platform. We connect skilled engineers and contractors to nationwide fibre build projects and deliver safe, precise, compliant installations."
+      reply: "Wynergy Fibre Solutions Ltd is a UK fibre infrastructure contractor and workforce platform connecting skilled engineers to compliant fibre build projects."
     },
     {
       keys: ["what is ace", "ace"],
-      reply:
-        "ACE is an Authoritative Company Explainer. It provides factual, governed explanations about how WFSL operates. It does not provide advice, make decisions, or act autonomously."
+      reply: "ACE is an Authoritative Company Explainer. It provides governed, factual explanations. It does not give advice or make decisions."
     },
     {
       keys: ["engage", "contact", "email"],
-      reply:
-        "For professional engagement, use the Engage page. ACE v1 does not collect personal data."
+      reply: "Professional engagement is handled via the Engage page. ACE v1 does not collect personal data."
     },
     {
       keys: ["gdpr", "privacy", "compliance"],
-      reply:
-        "ACE v1 does not store or process personal data. We do not run cookies, tracking, analytics, profiling, or automated decision-making. See the Compliance page for the public statement."
-    },
-    {
-      keys: ["services", "work", "projects"],
-      reply:
-        "WFSL supports fibre build delivery by connecting compliant engineers and contractors to structured project work. Engagement is governed and handled through the professional route."
+      reply: "ACE v1 does not store or process personal data. No cookies, tracking, profiling, or automated decision-making is used."
     }
   ];
 
   function nowStamp() {
-    const d = new Date();
-    return d.toLocaleString();
+    return new Date().toLocaleString();
   }
 
   function addMsg(role, text) {
@@ -125,10 +61,15 @@
 
   function respond(input) {
     const t = input.toLowerCase();
+
     for (const r of rules) {
-      if (r.keys.some(k => t.includes(k))) return r.reply;
+      if (r.keys.some(k => t.includes(k))) {
+        lastTopic = r.keys[0];
+        return r.reply;
+      }
     }
-    return "I can explain what WFSL does, how engagement works, or where to find compliance information. Try: “what is wfsl”, “how do I engage”, or “gdpr”.";
+
+    return "I did not understand that input. Please ask about WFSL, engagement, or compliance.";
   }
 
   userInput.addEventListener("keydown", (e) => {
@@ -137,13 +78,12 @@
     const text = userInput.value.trim();
     if (!text) return;
 
-    statusEl.textContent = "";
     addMsg("You", text);
-
     const reply = respond(text);
     addMsg("ACE", reply);
 
     userInput.value = "";
+    statusEl.textContent = "Press Enter to continue. Download saves locally only.";
   });
 
   downloadBtn.addEventListener("click", () => {
@@ -156,8 +96,8 @@
     URL.revokeObjectURL(url);
   });
 
-  addMsg("ACE", "Hello. Ask about WFSL, how we operate, or how engagement works. Press Enter to submit.");
-  statusEl.textContent = "Tip: press Enter to send. Download is optional and saves locally on your device.";
+  addMsg(
+    "ACE",
+    "Hello. I am ACE, the Authoritative Company Explainer for Wynergy Fibre Solutions Ltd. Ask about WFSL, engagement, or compliance."
+  );
 </script>
-</body>
-</html>
