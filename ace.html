@@ -22,8 +22,13 @@
     }
 
     h1 {
-      margin-top: 0;
+      margin: 0 0 4px 0;
       font-size: 22px;
+    }
+
+    p.sub {
+      margin: 0 0 16px 0;
+      opacity: 0.75;
     }
 
     #ace-messages {
@@ -35,15 +40,18 @@
       margin-bottom: 12px;
     }
 
-    .ace-msg {
-      margin-bottom: 10px;
-      opacity: 0.95;
+    .turn {
+      margin-bottom: 18px;
     }
 
     .user-msg {
-      margin-bottom: 10px;
       text-align: right;
       color: #2dd4ff;
+      margin-bottom: 6px;
+    }
+
+    .ace-msg {
+      color: rgba(255,255,255,0.9);
     }
 
     input {
@@ -69,11 +77,13 @@
 <body>
   <div class="container">
     <h1>ACE</h1>
-    <p>Authoritative Company Explainer</p>
+    <p class="sub">Authoritative Company Explainer</p>
 
     <div id="ace-messages">
-      <div class="ace-msg">
-        Hello. Ask about WFSL, engagement, or compliance.
+      <div class="turn">
+        <div class="ace-msg">
+          Hello. Ask about WFSL, engagement, or compliance.
+        </div>
       </div>
     </div>
 
@@ -89,11 +99,13 @@
   </div>
 
   <script>
-    /* ===============================
-       ACE v1 — Governed Interaction
-       =============================== */
+    /* =========================================
+       ACE v1.1 — Governed, Deterministic
+       Timeline + Intent Carry-Forward
+       ========================================= */
 
     let failureCount = 0;
+    let lastIntent = null;
 
     function normaliseInput(text) {
       return text
@@ -115,6 +127,15 @@
       return "unknown";
     }
 
+    function isFollowUp(text) {
+      return (
+        text.includes("this") ||
+        text.includes("that") ||
+        text.includes("they") ||
+        text.includes("what does this mean")
+      );
+    }
+
     function aceRespond(userInput) {
       const input = normaliseInput(userInput);
 
@@ -127,21 +148,28 @@
         return "This interface operates under professional and respectful use. Ask about WFSL, engagement, or compliance.";
       }
 
-      const intent = classifyIntent(input);
+      let intent = classifyIntent(input);
+
+      if (intent === "unknown" && isFollowUp(input) && lastIntent) {
+        intent = lastIntent;
+      }
 
       if (intent === "wfsl") {
+        lastIntent = "wfsl";
         failureCount = 0;
         return "WFSL designs and operates governance-first infrastructure systems for regulated and compliance-sensitive environments.";
       }
 
       if (intent === "engagement") {
+        lastIntent = "engagement";
         failureCount = 0;
         return "Engagement is structured and governed. Architecture and outcomes are shared. Core systems are disclosed selectively under NDA.";
       }
 
       if (intent === "compliance") {
+        lastIntent = "compliance";
         failureCount = 0;
-        return "Compliance focuses on auditability, enforcement, traceability, and operational control.";
+        return "Compliance prioritises auditability, enforcement, traceability, and operational control across systems.";
       }
 
       failureCount++;
@@ -154,23 +182,4 @@
       return "Please use the navigation or return home for structured information.";
     }
 
-    function appendMessage(className, text) {
-      const box = document.getElementById("ace-messages");
-      const div = document.createElement("div");
-      div.className = className;
-      div.textContent = text;
-      box.appendChild(div);
-      box.scrollTop = box.scrollHeight;
-    }
-
-    document.getElementById("ace-input").addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
-        const text = e.target.value;
-        e.target.value = "";
-        appendMessage("user-msg", text);
-        appendMessage("ace-msg", aceRespond(text));
-      }
-    });
-  </script>
-</body>
-</html>
+    function appendTurn(
