@@ -5,18 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ACE — Authoritative Company Explainer</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .chat-container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .chat-log {
+      height: 360px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 16px;
+      margin-bottom: 16px;
+      background: #f9f9fb;
+    }
+    .chat-entry {
+      margin-bottom: 12px;
+    }
+    .chat-entry.user {
+      font-weight: 600;
+    }
+    .chat-entry.ace {
+      color: #1f3cff;
+    }
+    .chat-input {
+      display: flex;
+      gap: 8px;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .chat-input button {
+      padding: 10px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
 <header class="site-header">
   <div class="header-inner">
     <img src="assets/wfsl-logo.jpg" alt="WFSL Logo" class="wfsl-logo" />
-
     <div class="brand-text">
       <h1>ACE</h1>
       <p class="tagline">Authoritative Company Explainer</p>
     </div>
-
     <nav class="top-nav">
       <a href="./index.html">Home</a>
       <a class="active" href="./ace.html">ACE</a>
@@ -26,41 +65,68 @@
   </div>
 </header>
 
-<main class="content">
+<main class="chat-container">
+  <h2>Ask ACE</h2>
+  <p>This is a governed explainer. No tracking. No storage.</p>
 
-<section class="card">
-  <h2>Purpose</h2>
-  <p>
-    ACE explains how Wynergy Fibre Solutions Ltd operates,
-    why boundaries exist, and how engagement is governed.
-  </p>
-</section>
-
-<section class="card">
-  <h2>Scope</h2>
-  <ul>
-    <li>No advice</li>
-    <li>No decisions</li>
-    <li>No data collection</li>
-    <li>No automation</li>
-  </ul>
-</section>
-
-<section class="card">
-  <h2>Next</h2>
-  <div class="cta-row">
-    <a class="btn primary" href="./engage.html">Engage Professionally</a>
-    <a class="btn secondary" href="./compliance.html">Compliance</a>
+  <div id="chatLog" class="chat-log">
+    <div class="chat-entry ace">
+      ACE: Hello. Ask about Wynergy Fibre Solutions Ltd, how we operate, or how engagement works.
+    </div>
   </div>
-</section>
 
+  <div class="chat-input">
+    <input id="userInput" type="text" placeholder="Type your question…" />
+    <button onclick="sendMessage()">Send</button>
+  </div>
 </main>
 
 <footer class="site-footer">
-  <div class="footer-inner">
-    <p>© Wynergy Fibre Solutions Ltd. Governed disclosure.</p>
-  </div>
+  © Wynergy Fibre Solutions Ltd. Governed disclosure.
 </footer>
+
+<script>
+  const responses = [
+    {
+      match: ["what do you do", "what is wynergy"],
+      reply: "Wynergy Fibre Solutions Ltd builds governance-first infrastructure and operational systems for regulated environments."
+    },
+    {
+      match: ["ace", "what is ace"],
+      reply: "ACE is an Authoritative Company Explainer. It provides factual explanations and does not give advice or make decisions."
+    },
+    {
+      match: ["engage", "contact"],
+      reply: "For professional engagement, use the Engage page. Public ACE does not collect personal data."
+    },
+    {
+      match: ["compliance", "gdpr"],
+      reply: "ACE v1 does not collect or process personal data. Compliance details are available on the Compliance page."
+    }
+  ];
+
+  function sendMessage() {
+    const input = document.getElementById("userInput");
+    const text = input.value.trim();
+    if (!text) return;
+
+    const log = document.getElementById("chatLog");
+
+    log.innerHTML += `<div class="chat-entry user">You: ${text}</div>`;
+
+    let reply = "ACE: I can explain our operations, governance model, or how to engage professionally.";
+    for (const r of responses) {
+      if (r.match.some(m => text.toLowerCase().includes(m))) {
+        reply = "ACE: " + r.reply;
+        break;
+      }
+    }
+
+    log.innerHTML += `<div class="chat-entry ace">${reply}</div>`;
+    log.scrollTop = log.scrollHeight;
+    input.value = "";
+  }
+</script>
 
 </body>
 </html>
