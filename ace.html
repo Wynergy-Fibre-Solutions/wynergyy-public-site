@@ -116,6 +116,194 @@
     log.scrollTop = log.scrollHeight;
   }
 </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACE — Authoritative Company Explainer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <img src="assets/wfsl-logo.jpg" alt="WFSL Logo" class="wfsl-logo" />
+        <div class="brand-text">
+          <h1>ACE</h1>
+          <p class="tagline">Authoritative Company Explainer for Wynergy Fibre Solutions Ltd</p>
+        </div>
+      </div>
+
+      <nav class="top-nav" aria-label="Primary">
+        <a href="./index.html">Home</a>
+        <a class="active" href="./ace.html" aria-current="page">ACE</a>
+        <a href="./engage.html">Engage</a>
+        <a href="./compliance.html">Compliance</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="card card-wide">
+      <div class="card-head">
+        <div>
+          <h2>Ask ACE</h2>
+          <p class="muted">No tracking. No storage. Answers are informational and governed.</p>
+        </div>
+
+        <div class="card-actions">
+          <button id="downloadBtn" class="btn secondary" type="button" disabled>Download transcript</button>
+          <a class="btn secondary" href="./engage.html">Engage professionally</a>
+        </div>
+      </div>
+
+      <div id="chatLog" class="chat-log" role="log" aria-live="polite" aria-relevant="additions">
+        <div class="msg ace">
+          <div class="meta">ACE</div>
+          <div class="bubble">
+            Hello. Ask about Wynergy Fibre Solutions Ltd, how we operate, or how engagement works.
+          </div>
+        </div>
+      </div>
+
+      <form id="chatForm" class="chat-input" autocomplete="off">
+        <input
+          id="userInput"
+          name="userInput"
+          type="text"
+          placeholder="Type your question and press Enter…"
+          maxlength="800"
+          required
+        />
+        <button id="sendBtn" class="btn" type="submit">Send</button>
+      </form>
+
+      <p id="statusLine" class="status muted" aria-live="polite"></p>
+
+      <div class="footer-row">
+        <a class="link" href="./index.html">Return home</a>
+        <a class="link" href="./compliance.html">Privacy and compliance</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>© Wynergy Fibre Solutions Ltd. Governed disclosure. Private core by design.</p>
+    </div>
+  </footer>
+
+  <script>
+    const chatLog = document.getElementById("chatLog");
+    const chatForm = document.getElementById("chatForm");
+    const userInput = document.getElementById("userInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const statusLine = document.getElementById("statusLine");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    const transcript = [];
+
+    function escapeHtml(s) {
+      return s
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function appendMessage(role, text) {
+      const safe = escapeHtml(text);
+
+      const el = document.createElement("div");
+      el.className = "msg " + role;
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.textContent = role === "user" ? "You" : "ACE";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.innerHTML = safe;
+
+      el.appendChild(meta);
+      el.appendChild(bubble);
+      chatLog.appendChild(el);
+
+      chatLog.scrollTop = chatLog.scrollHeight;
+
+      transcript.push({ role, text });
+      downloadBtn.disabled = transcript.length === 0;
+    }
+
+    function setStatus(text) {
+      statusLine.textContent = text || "";
+    }
+
+    async function askAce(message) {
+      const res = await fetch("/api/ace", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+
+      let data = null;
+      try { data = await res.json(); } catch { /* ignore */ }
+
+      if (!res.ok) {
+        const fallback = data?.reply || data?.error || "ACE is temporarily unavailable.";
+        return { ok: false, reply: fallback };
+      }
+
+      return { ok: true, reply: data?.reply || "No response." };
+    }
+
+    chatForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const text = (userInput.value || "").trim();
+      if (!text) return;
+
+      appendMessage("user", text);
+      userInput.value = "";
+
+      sendBtn.disabled = true;
+      userInput.disabled = true;
+      setStatus("ACE is responding…");
+
+      try {
+        const result = await askAce(text);
+        appendMessage("ace", result.reply);
+        setStatus(result.ok ? "" : "Temporary service issue. Try again.");
+      } catch {
+        appendMessage("ace", "ACE is temporarily unavailable.");
+        setStatus("Temporary service issue. Try again.");
+      } finally {
+        sendBtn.disabled = false;
+        userInput.disabled = false;
+        userInput.focus();
+      }
+    });
+
+    downloadBtn.addEventListener("click", () => {
+      const lines = transcript.map(m => `${m.role.toUpperCase()}: ${m.text}`);
+      const blob = new Blob([lines.join("\n\n")], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "ace-transcript.txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
 
 </body>
 </html>
