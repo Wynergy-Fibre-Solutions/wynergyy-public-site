@@ -1,138 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>ACE — Authoritative Company Explainer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-
-<body>
-<header class="site-header">
-  <div class="header-inner">
-    <div class="brand">
-      <img src="assets/wfsl-logo.jpg" class="wfsl-logo" alt="WFSL" />
-      <div class="brand-text">
-        <h1>ACE</h1>
-        <p class="tagline">Authoritative Company Explainer</p>
-      </div>
-    </div>
-    <nav class="top-nav">
-      <a href="index.html">Home</a>
-      <a class="active" href="ace.html">ACE</a>
-      <a href="engage.html">Engage</a>
-      <a href="compliance.html">Compliance</a>
-    </nav>
-  </div>
-</header>
-
-<main class="page">
-  <section class="card card-wide">
-    <div class="card-head">
-      <div>
-        <h2>Ask ACE</h2>
-        <p class="muted">No tracking. No storage. Informational responses only.</p>
-      </div>
-      <div class="card-actions">
-        <button id="downloadBtn" class="btn secondary" disabled>Download transcript</button>
-        <a href="engage.html" class="btn">Engage professionally</a>
-      </div>
-    </div>
-
-    <div id="chatLog" class="chat-log"></div>
-
-    <div class="chat-input">
-      <input
-        id="userInput"
-        type="text"
-        placeholder="Type a question and press Enter…"
-        autocomplete="off"
-      />
-    </div>
-
-    <div id="status" class="status muted"></div>
-
-    <div class="footer-row">
-      <a class="link" href="index.html">Return home</a>
-      <a class="link" href="compliance.html">Privacy and compliance</a>
-    </div>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="footer-inner">
-    © Wynergy Fibre Solutions Ltd. Governed disclosure.
-  </div>
-</footer>
-
 <script>
-  const chatLog = document.getElementById("chatLog");
-  const input = document.getElementById("userInput");
-  const status = document.getElementById("status");
-  const downloadBtn = document.getElementById("downloadBtn");
+/* ============================================================
+   ACE v1 — Governed Interaction Engine
+   Deterministic. Bounded. Professional by design.
+   ============================================================ */
 
-  const transcript = [];
+const ACE_CONFIG = {
+  allowedIntents: ["wfsl", "engagement", "compliance"],
+  maxFailures: 3
+};
 
-  const rules = [
-    { k:["hi","hello","hey"], r:"Hello. Ask about WFSL, engagement, or compliance." },
-    { k:["yes","ok"], r:"Please ask a specific question such as “what is wfsl” or “how do I engage”." },
-    { k:["what is wfsl","what do you do","wynergy"], r:"Wynergy Fibre Solutions Ltd is a UK fibre infrastructure contractor and workforce platform delivering compliant fibre build services." },
-    { k:["ace"], r:"ACE is a governed explainer. It provides factual information and does not give advice or make decisions." },
-    { k:["engage","contact"], r:"Professional engagement is handled via the Engage page." },
-    { k:["gdpr","privacy","compliance"], r:"ACE v1 does not collect or store personal data. No tracking or profiling is used." }
-  ];
+let failureCount = 0;
 
-  function add(role, text) {
-    const msg = document.createElement("div");
-    msg.className = "msg " + role;
+/* ---------- Normalisation ---------- */
+function normaliseInput(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
-    const meta = document.createElement("div");
-    meta.className = "meta";
-    meta.textContent = role === "user" ? "You" : "ACE";
+/* ---------- Conduct Gate ---------- */
+function detectMisconduct(text) {
+  const insults = ["stupid", "idiot", "dumb", "moron"];
+  const profanity = ["fuck", "shit", "cunt", "bastard"];
 
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
-    bubble.textContent = text;
-
-    msg.appendChild(meta);
-    msg.appendChild(bubble);
-    chatLog.appendChild(msg);
-    chatLog.scrollTop = chatLog.scrollHeight;
-
-    transcript.push(`${meta.textContent}: ${text}`);
-    if (transcript.length > 1) downloadBtn.disabled = false;
-  }
-
-  function reply(text) {
-    const t = text.toLowerCase();
-    for (const rule of rules) {
-      if (rule.k.some(k => t.includes(k))) return rule.r;
+  for (const word of [...insults, ...profanity]) {
+    if (text.includes(word)) {
+      return true;
     }
-    return "I did not understand that input. Ask about WFSL, engagement, or compliance.";
+  }
+  return false;
+}
+
+/* ---------- Intent Classification ---------- */
+function classifyIntent(text) {
+  if (text.includes("wfsl")) return "wfsl";
+  if (text.includes("engage") || text.includes("engagement")) return "engagement";
+  if (text.includes("compliance") || text.includes("legal")) return "compliance";
+  return "unknown";
+}
+
+/* ---------- Response Engine ---------- */
+function aceRespond(userInput) {
+  const input = normaliseInput(userInput);
+
+  if (!input) {
+    return "Please enter a question about WFSL, engagement, or compliance.";
   }
 
-  input.addEventListener("keydown", e => {
-    if (e.key !== "Enter") return;
-    const q = input.value.trim();
-    if (!q) return;
+  if (detectMisconduct(input)) {
+    failureCount++;
+    return "This interface operates under professional and respectful use. You can ask about WFSL, engagement, or compliance.";
+  }
 
-    add("user", q);
-    add("ace", reply(q));
+  const intent = classifyIntent(input);
 
-    input.value = "";
-    status.textContent = "Press Enter to continue.";
-  });
+  switch (intent) {
+    case "wfsl":
+      failureCount = 0;
+      return "WFSL designs and operates governance-first infrastructure systems for regulated and compliance-sensitive environments.";
 
-  downloadBtn.onclick = () => {
-    const blob = new Blob([transcript.join("\n")], { type:"text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "ace-transcript.txt";
-    a.click();
-    URL.revokeObjectURL(a.href);
-  };
+    case "engagement":
+      failureCount = 0;
+      return "Engagement is structured and governed. Architecture and outcomes are shared. Core systems are disclosed selectively under NDA.";
 
-  add("ace","Hello. I am ACE, the Authoritative Company Explainer for Wynergy Fibre Solutions Ltd.");
+    case "compliance":
+      failureCount = 0;
+      return "Compliance is central. Systems prioritise auditability, enforcement, traceability, and operational control.";
+
+    default:
+      failureCount++;
+      if (failureCount === 1) {
+        return "I did not understand that. Ask about WFSL, engagement, or compliance.";
+      }
+      if (failureCount === 2) {
+        return "Example questions: What does WFSL do? How does engagement work? What compliance standards apply?";
+      }
+      return "Please use the navigation above or return home for structured information.";
+  }
+}
+
+/* ---------- UI Hook ---------- */
+document.getElementById("ace-input").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    const userText = e.target.value;
+    e.target.value = "";
+
+    appendMessage("You", userText);
+    const reply = aceRespond(userText);
+    appendMessage("ACE", reply);
+  }
+});
+
+/* ---------- Message Renderer ---------- */
+function appendMessage(sender, text) {
+  const container = document.getElementById("ace-messages");
+  const msg = document.createElement("div");
+  msg.className = sender === "ACE" ? "ace-msg" : "user-msg";
+  msg.textContent = text;
+  container.appendChild(msg);
+  container.scrollTop = container.scrollHeight;
+}
 </script>
-</body>
-</html>
