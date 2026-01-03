@@ -1,246 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>ACE — Authoritative Company Explainer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <style>
-    :root {
-      --wfsl-blue:#1f3cff;
-      --wfsl-cyan:#2dd4ff;
-      --wfsl-green:#22c55e;
-
-      --bg0:#070a12;
-      --bg1:#0b1020;
-      --card:rgba(255,255,255,0.06);
-      --border:rgba(255,255,255,0.14);
-      --text:rgba(255,255,255,0.92);
-      --muted:rgba(255,255,255,0.65);
-    }
-
-    *{box-sizing:border-box}
-
-    body{
-      margin:0;
-      background:
-        radial-gradient(circle at 20% 10%,rgba(31,60,255,.08),transparent 40%),
-        radial-gradient(circle at 80% 80%,rgba(45,212,255,.06),transparent 45%),
-        linear-gradient(var(--bg1),var(--bg0));
-      color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    }
-
-    .wrap{
-      max-width:900px;
-      margin:48px auto;
-      padding:24px;
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:22px;
-      backdrop-filter:blur(6px);
-    }
-
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:18px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-    }
-
-    .logo{
-      width:44px;
-      height:44px;
-      border-radius:12px;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:#000;
-    }
-
-    .logo img{
-      max-width:100%;
-      max-height:100%;
-      object-fit:contain;
-    }
-
-    .titles h1{
-      margin:0;
-      font-size:22px;
-    }
-
-    .titles h2{
-      margin:4px 0 0 0;
-      font-size:13px;
-      font-weight:400;
-      color:var(--muted);
-    }
-
-    .status{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    .dot{
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:var(--wfsl-green);
-      box-shadow:0 0 10px rgba(34,197,94,.9);
-      animation:pulse 2.4s infinite;
-    }
-
-    @keyframes pulse{
-      0%{opacity:.6}
-      50%{opacity:1}
-      100%{opacity:.6}
-    }
-
-    .chat{
-      background:rgba(0,0,0,.45);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:16px;
-      height:460px;
-      overflow-y:auto;
-    }
-
-    .turn{margin-bottom:16px}
-
-    .ace{
-      background:rgba(255,255,255,.08);
-      padding:12px 14px;
-      border-radius:14px;
-      font-size:13px;
-    }
-
-    .user{
-      text-align:right;
-      color:var(--wfsl-cyan);
-      font-size:13px;
-      margin-bottom:6px;
-    }
-
-    .choices{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
-    }
-
-    .choice{
-      padding:8px 14px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(0,0,0,.35);
-      font-size:12px;
-      cursor:pointer;
-      transition:all .15s ease;
-    }
-
-    .choice:hover{
-      border-color:var(--wfsl-cyan);
-      box-shadow:0 0 0 1px rgba(45,212,255,.25);
-    }
-
-    .proof{
-      margin-top:8px;
-      font-size:11px;
-      color:var(--muted);
-    }
-
-    .proof a{
-      color:var(--wfsl-cyan);
-      text-decoration:none;
-    }
-
-    .input{
-      display:flex;
-      gap:10px;
-      margin-top:14px;
-    }
-
-    .input input{
-      flex:1;
-      padding:13px 14px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      background:rgba(0,0,0,.45);
-      color:var(--text);
-      font-size:13px;
-      outline:none;
-    }
-
-    .input button{
-      padding:0 20px;
-      border-radius:14px;
-      border:none;
-      background:linear-gradient(135deg,var(--wfsl-blue),var(--wfsl-cyan));
-      color:#000;
-      font-weight:700;
-      cursor:pointer;
-    }
-
-    footer{
-      margin-top:16px;
-      font-size:11px;
-      color:var(--muted);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      border-top:1px solid var(--border);
-      padding-top:12px;
-    }
-  </style>
-</head>
-
-<body>
-<div class="wrap">
-
-  <header>
-    <div class="brand">
-      <div class="logo">
-        <img src="/assets/wfsl-logo.jpg" alt="WFSL logo">
-      </div>
-      <div class="titles">
-        <h1>ACE</h1>
-        <h2>Authoritative Company Explainer</h2>
-      </div>
-    </div>
-
-    <div class="status">
-      <div class="dot"></div>
-      <span>ACE online</span>
-    </div>
-  </header>
-
-  <div id="chat" class="chat"></div>
-
-  <div class="input">
-    <input id="input" placeholder="Type or select an option" />
-    <button id="send">Send</button>
-  </div>
-
-  <footer>
-    <div>© Wynergy Fibre Solutions Ltd</div>
-    <div>Governed disclosure</div>
-  </footer>
-
-</div>
-
 <script>
-/* existing ACE logic unchanged */
-</script>
+let lastLane=null;
 
-</body>
-</html>
+const PROOF={
+  "Telecoms delivery":{label:"Industry standards",url:"https://www.openreach.com/help-and-support/engineering"},
+  "Governance & compliance":{label:"Regulatory framework",url:"https://www.ofcom.org.uk"},
+  "Assets & licensing":{label:"Licensable capability",url:"https://github.com/Wynergyy"}
+};
+
+const LANES={
+  "About WFSL":{text:"WFSL designs and operates governance-first telecoms and infrastructure systems for regulated environments.",next:["Telecoms delivery","Engagement","Governance & compliance"]},
+  "Telecoms delivery":{text:"Delivery is structured, verified and governed across fibre, civils and infrastructure pathways.",next:["Business value","Engagement","Governance & compliance"]},
+  "Business value":{text:"WFSL reduces delivery risk, improves compliance confidence and provides licensable operational capability.",next:["Assets & licensing","Engagement"]},
+  "Governance & compliance":{text:"All engagement operates within lawful, auditable and controlled governance frameworks.",next:["Assets & licensing","Engagement"]},
+  "Assets & licensing":{text:"WFSL holds licensable software, process IP and workforce governance capability. Detailed disclosure occurs under NDA.",next:["Engagement"]},
+  "Engagement":{text:"Engagement is structured and governed. Architecture and outcomes are shared selectively.",next:["Request NDA","Work with us"]},
+  "Request NDA":{text:"NDA access is issued following a verified expression of interest.",next:["Work with us","About WFSL"]},
+  "Work with us":{text:"WFSL engages with contractors, engineers and partners through verified pathways. Intake is controlled.",next:["Engagement","Telecoms delivery"]}
+};
+
+const DEFAULT=["About WFSL","Engagement","Telecoms delivery","Governance & compliance"];
+
+const chat=document.getElementById("chat");
+const input=document.getElementById("input");
+const send=document.getElementById("send");
+
+function ace(text,choices,lane){
+  const t=document.createElement("div");t.className="turn";
+  const a=document.createElement("div");a.className="ace";a.textContent=text;
+  t.appendChild(a);
+
+  if(PROOF[lane]){
+    const p=document.createElement("div");
+    p.className="proof";
+    p.innerHTML=`Reference: <a href="${PROOF[lane].url}" target="_blank" rel="noopener">${PROOF[lane].label}</a>`;
+    a.appendChild(p);
+  }
+
+  if(choices){
+    const c=document.createElement("div");c.className="choices";
+    choices.forEach(l=>{
+      const b=document.createElement("div");
+      b.className="choice";
+      b.textContent=l;
+      b.onclick=()=>pick(l);
+      c.appendChild(b);
+    });
+    a.appendChild(c);
+  }
+
+  chat.appendChild(t);
+  chat.scrollTop=chat.scrollHeight;
+}
+
+function user(text){
+  const t=document.createElement("div");t.className="turn";
+  const u=document.createElement("div");u.className="user";u.textContent=text;
+  t.appendChild(u);
+  chat.appendChild(t);
+  chat.scrollTop=chat.scrollHeight;
+}
+
+function pick(label){
+  lastLane=label;
+  user(label);
+  const lane=LANES[label];
+  ace(lane.text,lane.next,label);
+}
+
+function handle(){
+  const v=input.value.trim();
+  if(!v)return;
+  input.value="";
+  user(v);
+  ace("To continue, choose a guided option.",lastLane?LANES[lastLane].next:DEFAULT);
+}
+
+send.onclick=handle;
+input.addEventListener("keydown",e=>{if(e.key==="Enter")handle();});
+
+ace("Hello. Choose a topic to explore WFSL.",DEFAULT);
+</script>
