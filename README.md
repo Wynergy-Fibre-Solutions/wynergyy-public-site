@@ -1,48 +1,48 @@
-# \# Wynergyy
+\# Wynergyy
 
-# 
 
-# \## Overview
 
-# Wynergyy builds governance-first infrastructure systems for regulated and compliance-sensitive environments.
+\## Overview
 
-# 
+Wynergyy builds governance-first infrastructure systems for regulated and compliance-sensitive environments.
 
-# \## What We Do
 
-# Our work focuses on enforcement, licensing, auditability, and operational integrity across distributed systems where reliability, traceability, and control matter.
 
-# 
+\## What We Do
 
-# \## How We Work
+Our work focuses on enforcement, licensing, auditability, and operational integrity across distributed systems where reliability, traceability, and control matter.
 
-# Core systems are privately developed and governed.
 
-# Public repositories are intentionally limited to narrative, tooling, and bounded explainer surfaces.
 
-# 
+\## How We Work
 
-# \## Why This Matters
+Core systems are privately developed and governed.
 
-# This approach protects intellectual property, reduces operational risk, and aligns with best practice in infrastructure, telecoms, and regulated sectors.
+Public repositories are intentionally limited to narrative, tooling, and bounded explainer surfaces.
 
-# 
 
-# \## Engagement
 
-# We share architecture, process, and outcomes.
+\## Why This Matters
 
-# Core source systems are disclosed selectively under NDA.
+This approach protects intellectual property, reduces operational risk, and aligns with best practice in infrastructure, telecoms, and regulated sectors.
 
-# 
 
-# \## Status
 
-# Active development.  
+\## Engagement
 
-# Private core systems.  
+We share architecture, process, and outcomes.
 
-# Public signal by design.
+Core source systems are disclosed selectively under NDA.
 
-# 
+
+
+\## Status
+
+Active development.
+
+Private core systems.
+
+Public signal by design.
+
+
 
