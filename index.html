@@ -15,240 +15,205 @@
       --muted:rgba(255,255,255,0.65);
       --accent:#2dd4ff;
     }
-
-    * { box-sizing:border-box; }
-    body {
+    *{box-sizing:border-box}
+    body{
       margin:0;
-      background:radial-gradient(circle at top, var(--bg1), var(--bg0));
+      background:radial-gradient(circle at top,var(--bg1),var(--bg0));
       color:var(--text);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     }
-
-    header {
-      max-width:1200px;
-      margin:32px auto 0;
-      padding:0 24px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
+    header{
+      max-width:1200px;margin:32px auto 0;padding:0 24px;
+      display:flex;align-items:center;justify-content:space-between
     }
-
-    header h1 {
-      font-size:20px;
-      margin:0;
-      letter-spacing:0.4px;
+    header h1{font-size:20px;margin:0;letter-spacing:.4px}
+    header span{color:var(--muted);font-size:13px}
+    main{
+      max-width:1200px;margin:32px auto;padding:0 24px;
+      display:grid;grid-template-columns:1fr 420px;gap:24px
     }
-
-    header span {
-      color:var(--muted);
-      font-size:13px;
+    section{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:14px;padding:20px
     }
-
-    main {
-      max-width:1200px;
-      margin:32px auto;
-      padding:0 24px;
-      display:grid;
-      grid-template-columns:1fr 420px;
-      gap:24px;
+    .hero h2{margin:0 0 8px 0;font-size:22px}
+    .hero p{margin:0;color:var(--muted);line-height:1.5}
+    .signals{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+    .signal{
+      padding:12px;border-radius:10px;background:rgba(0,0,0,.35);
+      border:1px solid var(--border);font-size:12px;color:var(--muted)
     }
-
-    section {
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:20px;
+    .signal strong{display:block;color:var(--text);font-size:13px;margin-bottom:4px}
+    .chat{display:flex;flex-direction:column;height:520px}
+    .chat-header{font-size:14px;margin-bottom:8px;color:var(--muted)}
+    .chat-window{
+      flex:1;background:rgba(0,0,0,.4);
+      border:1px solid var(--border);border-radius:12px;
+      padding:14px;overflow-y:auto
     }
-
-    .hero h2 {
-      margin:0 0 8px 0;
-      font-size:22px;
+    .turn{margin-bottom:16px}
+    .user{text-align:right;color:var(--accent);font-size:13px;margin-bottom:6px}
+    .ace{
+      background:rgba(255,255,255,.08);
+      padding:10px 12px;border-radius:10px;font-size:13px
     }
-
-    .hero p {
-      margin:0;
-      color:var(--muted);
-      line-height:1.5;
+    .choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .choice{
+      padding:8px 12px;border-radius:999px;border:1px solid var(--border);
+      background:rgba(0,0,0,.35);color:var(--text);
+      font-size:12px;cursor:pointer
     }
-
-    .signals {
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      margin-top:16px;
+    .input{display:flex;gap:8px;margin-top:10px}
+    .input input{
+      flex:1;padding:12px;border-radius:10px;border:1px solid var(--border);
+      background:rgba(0,0,0,.4);color:var(--text);
+      font-size:13px;outline:none
     }
-
-    .signal {
-      padding:12px;
-      border-radius:10px;
-      background:rgba(0,0,0,0.35);
-      border:1px solid var(--border);
-      font-size:12px;
-      color:var(--muted);
+    .input button{
+      padding:0 18px;border-radius:10px;border:none;
+      background:var(--accent);color:#000;font-weight:600;cursor:pointer
     }
-
-    .signal strong {
-      display:block;
-      color:var(--text);
-      font-size:13px;
-      margin-bottom:4px;
-    }
-
-    .chat {
-      display:flex;
-      flex-direction:column;
-      height:520px;
-    }
-
-    .chat-header {
-      font-size:14px;
-      margin-bottom:8px;
-      color:var(--muted);
-    }
-
-    .chat-window {
-      flex:1;
-      background:rgba(0,0,0,0.4);
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:14px;
-      overflow-y:auto;
-    }
-
-    .turn {
-      margin-bottom:16px;
-    }
-
-    .user {
-      text-align:right;
-      color:var(--accent);
-      font-size:13px;
-      margin-bottom:6px;
-    }
-
-    .ace {
-      background:rgba(255,255,255,0.08);
-      padding:10px 12px;
-      border-radius:10px;
-      font-size:13px;
-    }
-
-    .choices {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
-    }
-
-    .choice {
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(0,0,0,0.35);
-      color:var(--text);
-      font-size:12px;
-      cursor:pointer;
-    }
-
-    .input {
-      display:flex;
-      gap:8px;
-      margin-top:10px;
-    }
-
-    .input input {
-      flex:1;
-      padding:12px;
-      border-radius:10px;
-      border:1px solid var(--border);
-      background:rgba(0,0,0,0.4);
-      color:var(--text);
-      font-size:13px;
-      outline:none;
-    }
-
-    .input button {
-      padding:0 18px;
-      border-radius:10px;
-      border:none;
-      background:var(--accent);
-      color:#000;
-      font-weight:600;
-      cursor:pointer;
-    }
-
-    footer {
-      max-width:1200px;
-      margin:16px auto 32px;
-      padding:0 24px;
-      color:var(--muted);
-      font-size:11px;
-      display:flex;
-      justify-content:space-between;
+    footer{
+      max-width:1200px;margin:16px auto 32px;padding:0 24px;
+      color:var(--muted);font-size:11px;display:flex;justify-content:space-between
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>WFSL</h1>
-    <span>Governed infrastructure, telecoms and software</span>
-  </header>
+<header>
+  <h1>WFSL</h1>
+  <span>Governed infrastructure, telecoms and software</span>
+</header>
 
-  <main>
-    <section class="hero">
-      <h2>Governed infrastructure delivery</h2>
-      <p>
-        WFSL designs and operates telecoms and infrastructure systems with
-        governance, compliance and operational integrity built in.
-      </p>
+<main>
+  <section class="hero">
+    <h2>Governed infrastructure delivery</h2>
+    <p>
+      WFSL designs and operates telecoms and infrastructure systems with
+      governance, compliance and operational integrity built in.
+    </p>
+    <div class="signals">
+      <div class="signal"><strong>Governance-first</strong>Deterministic systems. Controlled disclosure.</div>
+      <div class="signal"><strong>Telecoms & infrastructure</strong>Fibre, civils, structured delivery.</div>
+      <div class="signal"><strong>Licensable capability</strong>Software, process and workforce logic.</div>
+    </div>
+  </section>
 
-      <div class="signals">
-        <div class="signal">
-          <strong>Governance-first</strong>
-          Deterministic systems. Controlled disclosure.
-        </div>
-        <div class="signal">
-          <strong>Telecoms & infrastructure</strong>
-          Fibre, civils, structured delivery.
-        </div>
-        <div class="signal">
-          <strong>Licensable capability</strong>
-          Software, process and workforce logic.
-        </div>
-      </div>
-    </section>
+  <section class="chat">
+    <div class="chat-header">Authoritative Company Explainer</div>
+    <div id="chat-window" class="chat-window"></div>
+    <div class="input">
+      <input id="chat-input" type="text" placeholder="Type or select an option" />
+      <button id="chat-send">Send</button>
+    </div>
+  </section>
+</main>
 
-    <section class="chat">
-      <div class="chat-header">Authoritative Company Explainer</div>
+<footer>
+  <div>© Wynergy Fibre Solutions Ltd</div>
+  <div>Governed disclosure. No automated advice.</div>
+</footer>
 
-      <div id="chat-window" class="chat-window">
-        <div class="turn">
-          <div class="ace">
-            Hello. Choose a topic to explore WFSL.
-            <div class="choices">
-              <div class="choice">About WFSL</div>
-              <div class="choice">Telecoms delivery</div>
-              <div class="choice">Business value</div>
-              <div class="choice">Governance & compliance</div>
-              <div class="choice">Assets & licensing</div>
-              <div class="choice">Work with us</div>
-            </div>
-          </div>
-        </div>
-      </div>
+<script>
+/* ============================
+   ACE — Deterministic Engine
+   ============================ */
 
-      <div class="input">
-        <input id="chat-input" type="text" placeholder="Type or select an option" />
-        <button id="chat-send">Send</button>
-      </div>
-    </section>
-  </main>
+const LANES = {
+  "About WFSL": {
+    text: "WFSL is a governance-first telecoms and infrastructure operator. We prioritise compliance, auditability and controlled delivery.",
+    next: ["Telecoms delivery","Business value","Governance & compliance"]
+  },
+  "Telecoms delivery": {
+    text: "We deliver fibre and infrastructure using governed processes, verified workforce pathways and controlled execution.",
+    next: ["Business value","Work with us","Governance & compliance"]
+  },
+  "Business value": {
+    text: "WFSL reduces delivery risk, improves compliance confidence and provides structured capability for partners and clients.",
+    next: ["Assets & licensing","Governance & compliance","Work with us"]
+  },
+  "Governance & compliance": {
+    text: "Our systems are designed for regulated environments with explicit controls, lawful frameworks and audit-ready processes.",
+    next: ["Assets & licensing","About WFSL","Work with us"]
+  },
+  "Assets & licensing": {
+    text: "WFSL holds licensable software, process IP and workforce governance capability. Deeper disclosure occurs under NDA.",
+    next: ["Business value","Governance & compliance","Work with us"]
+  },
+  "Work with us": {
+    text: "We engage with contractors, engineers and partners through verified pathways. Expression of interest routes are controlled.",
+    next: ["Governance & compliance","Telecoms delivery","About WFSL"]
+  }
+};
 
-  <footer>
-    <div>© Wynergy Fibre Solutions Ltd</div>
-    <div>Governed disclosure. No automated advice.</div>
-  </footer>
+const DEFAULT_CHOICES = Object.keys(LANES);
 
+const chat = document.getElementById("chat-window");
+const input = document.getElementById("chat-input");
+const send = document.getElementById("chat-send");
+
+function aceTurn(text, choices){
+  const t = document.createElement("div");
+  t.className = "turn";
+  const a = document.createElement("div");
+  a.className = "ace";
+  a.textContent = text;
+  t.appendChild(a);
+  if(choices && choices.length){
+    const c = document.createElement("div");
+    c.className = "choices";
+    choices.forEach(label=>{
+      const b = document.createElement("div");
+      b.className = "choice";
+      b.textContent = label;
+      b.onclick = ()=>select(label);
+      c.appendChild(b);
+    });
+    a.appendChild(c);
+  }
+  chat.appendChild(t);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function userTurn(text){
+  const t = document.createElement("div");
+  t.className = "turn";
+  const u = document.createElement("div");
+  u.className = "user";
+  u.textContent = text;
+  t.appendChild(u);
+  chat.appendChild(t);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function select(label){
+  userTurn(label);
+  const lane = LANES[label];
+  if(lane){
+    aceTurn(lane.text, lane.next);
+  }else{
+    aceTurn("Please choose one of the guided options.", DEFAULT_CHOICES);
+  }
+}
+
+function handleInput(){
+  const v = input.value.trim();
+  if(!v) return;
+  input.value = "";
+  userTurn(v);
+  if(LANES[v]){
+    aceTurn(LANES[v].text, LANES[v].next);
+  }else{
+    aceTurn("To continue, choose a guided topic.", DEFAULT_CHOICES);
+  }
+}
+
+send.onclick = handleInput;
+input.addEventListener("keydown", e=>{ if(e.key==="Enter") handleInput(); });
+
+// boot
+aceTurn("Hello. Choose a topic to explore WFSL.", DEFAULT_CHOICES);
+</script>
 </body>
 </html>
