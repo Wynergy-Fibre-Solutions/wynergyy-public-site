@@ -37,7 +37,7 @@
       border:1px solid var(--border);
       border-radius:14px;
       padding:16px;
-      height:420px;
+      height:440px;
       overflow-y:auto;
     }
     .turn{margin-bottom:16px}
@@ -67,6 +67,15 @@
       color:var(--text);
       font-size:12px;
       cursor:pointer;
+    }
+    .proof{
+      margin-top:8px;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .proof a{
+      color:var(--accent);
+      text-decoration:none;
     }
     .input{
       display:flex;
@@ -121,10 +130,27 @@
 </div>
 
 <script>
+let lastLane = null;
+
+const PROOF = {
+  "Telecoms delivery": {
+    label: "Industry standards",
+    url: "https://www.openreach.com/help-and-support/engineering"
+  },
+  "Governance & compliance": {
+    label: "Regulatory framework",
+    url: "https://www.ofcom.org.uk"
+  },
+  "Assets & licensing": {
+    label: "Licensable capability",
+    url: "https://github.com/Wynergyy"
+  }
+};
+
 const LANES = {
   "About WFSL": {
     text: "WFSL designs and operates governance-first telecoms and infrastructure systems for regulated environments.",
-    next: ["Engagement","Telecoms delivery","Governance & compliance"]
+    next: ["Telecoms delivery","Engagement","Governance & compliance"]
   },
   "Telecoms delivery": {
     text: "Delivery is structured, verified and governed across fibre, civils and infrastructure pathways.",
@@ -136,18 +162,18 @@ const LANES = {
   },
   "Governance & compliance": {
     text: "All engagement operates within lawful, auditable and controlled governance frameworks.",
-    next: ["Engagement","Assets & licensing"]
+    next: ["Assets & licensing","Engagement"]
   },
   "Assets & licensing": {
     text: "WFSL holds licensable software, process IP and workforce governance capability. Detailed disclosure occurs under NDA.",
     next: ["Engagement"]
   },
   "Engagement": {
-    text: "Engagement is structured and governed. Architecture and outcomes are shared. Core systems are disclosed selectively.",
+    text: "Engagement is structured and governed. Architecture and outcomes are shared selectively.",
     next: ["Request NDA","Work with us"]
   },
   "Request NDA": {
-    text: "NDA access is issued following a verified expression of interest. Please proceed via the engagement route.",
+    text: "NDA access is issued following a verified expression of interest.",
     next: ["Work with us","About WFSL"]
   },
   "Work with us": {
@@ -162,10 +188,18 @@ const chat = document.getElementById("chat");
 const input = document.getElementById("input");
 const send = document.getElementById("send");
 
-function ace(text, choices){
+function ace(text, choices, lane){
   const t=document.createElement("div");t.className="turn";
   const a=document.createElement("div");a.className="ace";a.textContent=text;
   t.appendChild(a);
+
+  if(PROOF[lane]){
+    const p=document.createElement("div");
+    p.className="proof";
+    p.innerHTML = `Reference: <a href="${PROOF[lane].url}" target="_blank" rel="noopener">${PROOF[lane].label}</a>`;
+    a.appendChild(p);
+  }
+
   if(choices){
     const c=document.createElement("div");c.className="choices";
     choices.forEach(l=>{
@@ -177,6 +211,7 @@ function ace(text, choices){
     });
     a.appendChild(c);
   }
+
   chat.appendChild(t);
   chat.scrollTop=chat.scrollHeight;
 }
@@ -190,9 +225,10 @@ function user(text){
 }
 
 function pick(label){
+  lastLane = label;
   user(label);
   const lane = LANES[label];
-  ace(lane.text, lane.next);
+  ace(lane.text, lane.next, label);
 }
 
 function handle(){
@@ -200,7 +236,7 @@ function handle(){
   if(!v) return;
   input.value="";
   user(v);
-  ace("To continue, choose a guided option.", DEFAULT);
+  ace("To continue, choose a guided option.", lastLane ? LANES[lastLane].next : DEFAULT);
 }
 
 send.onclick=handle;
