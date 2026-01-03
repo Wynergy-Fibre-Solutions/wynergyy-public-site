@@ -66,3 +66,11 @@ document.getElementById("openAce").addEventListener("click", () => {
 document.getElementById("closeAce").addEventListener("click", () => {
   aceModal.style.display = "none";
 });
+
+// GDPR-safe escalation: no tracking, no transcripts, explicit consent on next page
+const engageBtn = document.getElementById("openEngage");
+if (engageBtn) {
+  engageBtn.addEventListener("click", () => {
+    window.location.href = "engage.html";
+  });
+}
