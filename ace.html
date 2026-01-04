@@ -39,6 +39,10 @@ button{
   padding:8px 14px;border-radius:999px;cursor:pointer;transition:.15s
 }
 button:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 1px rgba(45,212,255,.15)}
+button.primary{
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  color:#000;border:none;font-weight:700
+}
 footer{
   margin-top:14px;padding-top:10px;border-top:1px solid var(--border);
   display:flex;justify-content:space-between;font-size:12px;color:var(--muted)
@@ -70,158 +74,85 @@ footer{
 <script>
 const panel=document.getElementById("panel");
 
+const CONTACT_URL="mailto:info@wynergy.co.uk?subject=WFSL%20Engagement%20Enquiry";
+
 const nodes={
-  root:{
-    t:"Hello. Choose a topic to explore WFSL.",
-    o:[
-      ["About WFSL","about"],
-      ["Engagement","engage"],
-      ["Telecoms delivery","telecoms"],
-      ["Governance & compliance","gov"]
-    ]
-  },
+  root:{t:"Hello. Choose a topic to explore WFSL.",o:[
+    ["About WFSL","about"],["Engagement","engage"],
+    ["Telecoms delivery","telecoms"],["Governance & compliance","gov"]
+  ]},
 
-  /* ABOUT */
-  about:{
-    t:"WFSL builds governance-first telecoms and infrastructure capability for regulated environments.",
-    o:[
-      ["What we do","about_do"],
-      ["Why governance-first","about_why"],
-      ["Back to start","root"]
-    ]
-  },
-  about_do:{
-    t:"We design, deploy and govern delivery across fibre, civils and operational systems.",
-    o:[
-      ["Business value","value"],
-      ["Telecoms delivery","telecoms"],
-      ["Back to About","about"]
-    ]
-  },
-  about_why:{
-    t:"Governance-first reduces delivery risk, regulatory exposure and operational ambiguity.",
-    o:[
-      ["Governance & compliance","gov"],
-      ["Engagement","engage"],
-      ["Back to About","about"]
-    ]
-  },
+  about:{t:"WFSL builds governance-first telecoms and infrastructure capability for regulated environments.",o:[
+    ["What we do","about_do"],["Why governance-first","about_why"],["Back to start","root"]
+  ]},
+  about_do:{t:"We design, deploy and govern delivery across fibre, civils and operational systems.",o:[
+    ["Business value","value"],["Telecoms delivery","telecoms"],["Back to About","about"]
+  ]},
+  about_why:{t:"Governance-first reduces delivery risk, regulatory exposure and operational ambiguity.",o:[
+    ["Governance & compliance","gov"],["Engagement","engage"],["Back to About","about"]
+  ]},
 
-  /* ENGAGEMENT */
-  engage:{
-    t:"Engagement is structured. Disclosure is selective. Outcomes are governed.",
-    o:[
-      ["Work with us","work"],
-      ["Request NDA","nda"],
-      ["Back to start","root"]
-    ]
-  },
-  work:{
-    t:"WFSL works with contractors, engineers, partners and clients through verified pathways.",
-    o:[
-      ["Contractors & engineers","work_ce"],
-      ["Partners & clients","work_pc"],
-      ["Back to Engagement","engage"]
-    ]
-  },
-  work_ce:{
-    t:"Contractors and engineers engage via compliance-aligned intake and verification.",
-    o:[
-      ["Engagement","engage"],
-      ["Back to start","root"]
-    ]
-  },
-  work_pc:{
-    t:"Partners and clients engage for governed delivery, capability or licensing.",
-    o:[
-      ["Engagement","engage"],
-      ["Back to start","root"]
-    ]
-  },
-  nda:{
-    t:"NDA access is issued following a verified expression of interest.",
-    o:[
-      ["Engagement","engage"],
-      ["Back to start","root"]
-    ]
-  },
+  engage:{t:"Engagement is structured. Disclosure is selective. Outcomes are governed.",o:[
+    ["Work with us","work"],["Request NDA","nda"],["Contact WFSL","contact"],["Back to start","root"]
+  ]},
+  work:{t:"WFSL works with contractors, engineers, partners and clients through verified pathways.",o:[
+    ["Contractors & engineers","work_ce"],["Partners & clients","work_pc"],["Back to Engagement","engage"]
+  ]},
+  work_ce:{t:"Contractors and engineers engage via compliance-aligned intake and verification.",o:[
+    ["Contact WFSL","contact"],["Back to start","root"]
+  ]},
+  work_pc:{t:"Partners and clients engage for governed delivery, capability or licensing.",o:[
+    ["Contact WFSL","contact"],["Back to start","root"]
+  ]},
+  nda:{t:"NDA access is issued following a verified expression of interest.",o:[
+    ["Contact WFSL","contact"],["Back to start","root"]
+  ]},
 
-  /* TELECOMS */
-  telecoms:{
-    t:"Delivery spans fibre, civils and managed infrastructure pathways.",
-    o:[
-      ["Fibre & civils","tel_fibre"],
-      ["Managed delivery","tel_managed"],
-      ["Back to start","root"]
-    ]
-  },
-  tel_fibre:{
-    t:"Fibre and civils delivery is structured, verified and governed end-to-end.",
-    o:[
-      ["Business value","value"],
-      ["Governance & compliance","gov"],
-      ["Back to Telecoms","telecoms"]
-    ]
-  },
-  tel_managed:{
-    t:"Managed delivery focuses on assurance, coordination and operational control.",
-    o:[
-      ["Assets & licensing","assets"],
-      ["Engagement","engage"],
-      ["Back to Telecoms","telecoms"]
-    ]
-  },
+  telecoms:{t:"Delivery spans fibre, civils and managed infrastructure pathways.",o:[
+    ["Fibre & civils","tel_fibre"],["Managed delivery","tel_managed"],["Back to start","root"]
+  ]},
+  tel_fibre:{t:"Fibre and civils delivery is structured, verified and governed end-to-end.",o:[
+    ["Business value","value"],["Governance & compliance","gov"],["Back to Telecoms","telecoms"]
+  ]},
+  tel_managed:{t:"Managed delivery focuses on assurance, coordination and operational control.",o:[
+    ["Assets & licensing","assets"],["Engagement","engage"],["Back to Telecoms","telecoms"]
+  ]},
 
-  /* GOVERNANCE */
-  gov:{
-    t:"All activity operates within lawful, auditable governance frameworks.",
-    o:[
-      ["Regulatory alignment","gov_reg"],
-      ["Audit & assurance","gov_audit"],
-      ["Back to start","root"]
-    ]
-  },
-  gov_reg:{
-    t:"Delivery aligns with UK telecoms and infrastructure regulatory frameworks, including Ofcom.",
-    o:[
-      ["Audit & assurance","gov_audit"],
-      ["Back to Governance","gov"]
-    ]
-  },
-  gov_audit:{
-    t:"Auditability and assurance are built into process and tooling.",
-    o:[
-      ["Assets & licensing","assets"],
-      ["Back to Governance","gov"]
-    ]
-  },
+  gov:{t:"All activity operates within lawful, auditable governance frameworks.",o:[
+    ["Regulatory alignment","gov_reg"],["Audit & assurance","gov_audit"],["Back to start","root"]
+  ]},
+  gov_reg:{t:"Delivery aligns with UK telecoms and infrastructure regulatory frameworks, including Ofcom.",o:[
+    ["Audit & assurance","gov_audit"],["Back to Governance","gov"]
+  ]},
+  gov_audit:{t:"Auditability and assurance are built into process and tooling.",o:[
+    ["Assets & licensing","assets"],["Back to Governance","gov"]
+  ]},
 
-  /* VALUE / ASSETS */
-  value:{
-    t:"WFSL improves confidence, reduces risk and enables governed scale.",
-    o:[
-      ["Assets & licensing","assets"],
-      ["Engagement","engage"],
-      ["Back to start","root"]
-    ]
-  },
-  assets:{
-    t:"WFSL develops proprietary operational assets and governance systems, disclosed selectively.",
-    o:[
-      ["Engagement","engage"],
-      ["Back to start","root"]
-    ]
-  }
+  value:{t:"WFSL improves confidence, reduces risk and enables governed scale.",o:[
+    ["Assets & licensing","assets"],["Engagement","engage"],["Back to start","root"]
+  ]},
+  assets:{t:"WFSL develops proprietary operational assets and governance systems, disclosed selectively.",o:[
+    ["Engagement","engage"],["Back to start","root"]
+  ]},
+
+  contact:{t:"For governed engagement, contact WFSL directly.",o:[
+    ["Open email","_contact"],["Back to start","root"]
+  ]}
 };
 
 function render(k){
-  const n=nodes[k]; panel.innerHTML="";
-  const m=document.createElement("div"); m.className="message";
-  m.innerHTML=`<p>${n.t}</p>`; panel.appendChild(m);
-  const c=document.createElement("div"); c.className="choices";
+  panel.innerHTML="";
+  if(k==="_contact"){window.location.href=CONTACT_URL;return;}
+  const n=nodes[k];
+  const m=document.createElement("div");m.className="message";
+  m.innerHTML=`<p>${n.t}</p>`;panel.appendChild(m);
+  const c=document.createElement("div");c.className="choices";
   n.o.forEach(([l,t])=>{
-    const b=document.createElement("button"); b.textContent=l;
-    b.onclick=()=>render(t); c.appendChild(b);
+    const b=document.createElement("button");
+    b.textContent=l;
+    if(t==="contact") b.classList.add("primary");
+    b.onclick=()=>render(t);
+    c.appendChild(b);
   });
   panel.appendChild(c);
 }
