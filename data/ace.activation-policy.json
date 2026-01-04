@@ -1,0 +1,6 @@
+{
+  "engine":"ACE",
+  "version":"phase-c28",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Global activation kill-switch."},
+  "policy":{"global_active":false,"allowlist":[]}
+}

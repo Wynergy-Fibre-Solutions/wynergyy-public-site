@@ -1,0 +1,9 @@
+{
+  "engine":"ACE",
+  "version":"phase-c31",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Instant rollback actions."},
+  "actions":[
+    {"id":"disable-roles","status":"dormant","description":"Disable all role activations."},
+    {"id":"disable-evidence","status":"dormant","description":"Hide all evidence surfaces."}
+  ]
+}

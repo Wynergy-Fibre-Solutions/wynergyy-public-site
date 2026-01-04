@@ -1,0 +1,33 @@
+{
+  "$schema":"http://json-schema.org/draft-07/schema#",
+  "title":"ACE Safety Assertions (Dormant)",
+  "type":"object",
+  "required":["engine","version","governance","assertions"],
+  "properties":{
+    "engine":{"type":"string","const":"ACE"},
+    "version":{"type":"string"},
+    "governance":{
+      "type":"object",
+      "required":["mode","exposed","note"],
+      "properties":{
+        "mode":{"type":"string","const":"structure-only"},
+        "exposed":{"type":"boolean","const":false},
+        "note":{"type":"string"}
+      }
+    },
+    "assertions":{
+      "type":"array",
+      "items":{
+        "type":"object",
+        "required":["id","status","check"],
+        "properties":{
+          "id":{"type":"string"},
+          "status":{"type":"string","const":"dormant"},
+          "check":{"type":"string"}
+        },
+        "additionalProperties":false
+      }
+    }
+  },
+  "additionalProperties":false
+}

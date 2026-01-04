@@ -1,0 +1,10 @@
+{
+  "engine":"ACE",
+  "version":"phase-c29",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Activation dependency graph."},
+  "dependencies":[
+    {"component":"role-activation","requires":["activation-policy"]},
+    {"component":"evidence-exposure","requires":["risk-disclosure","access-gates"]},
+    {"component":"commercial-surface","requires":["pricing","partner-programme"]}
+  ]
+}

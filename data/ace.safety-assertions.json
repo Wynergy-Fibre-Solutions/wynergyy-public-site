@@ -1,0 +1,9 @@
+{
+  "engine":"ACE",
+  "version":"phase-c30",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Pre-flight safety assertions."},
+  "assertions":[
+    {"id":"no-global-activation","status":"dormant","check":"activation_policy.global_active==false"},
+    {"id":"nda-before-confidential","status":"dormant","check":"nda_required==true"}
+  ]
+}

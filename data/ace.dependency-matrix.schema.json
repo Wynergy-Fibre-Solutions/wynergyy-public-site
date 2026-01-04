@@ -1,0 +1,32 @@
+{
+  "$schema":"http://json-schema.org/draft-07/schema#",
+  "title":"ACE Dependency Matrix (Dormant)",
+  "type":"object",
+  "required":["engine","version","governance","dependencies"],
+  "properties":{
+    "engine":{"type":"string","const":"ACE"},
+    "version":{"type":"string"},
+    "governance":{
+      "type":"object",
+      "required":["mode","exposed","note"],
+      "properties":{
+        "mode":{"type":"string","const":"structure-only"},
+        "exposed":{"type":"boolean","const":false},
+        "note":{"type":"string"}
+      }
+    },
+    "dependencies":{
+      "type":"array",
+      "items":{
+        "type":"object",
+        "required":["component","requires"],
+        "properties":{
+          "component":{"type":"string"},
+          "requires":{"type":"array","items":{"type":"string"}}
+        },
+        "additionalProperties":false
+      }
+    }
+  },
+  "additionalProperties":false
+}
