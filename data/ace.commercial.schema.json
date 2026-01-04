@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ACE Commercial Surface Stubs",
+  "type": "object",
+  "required": ["engine", "version", "governance", "licensing", "commission_routes", "engagement_routes"],
+  "properties": {
+    "engine": { "type": "string", "const": "ACE" },
+    "version": { "type": "string" },
+    "governance": {
+      "type": "object",
+      "required": ["mode", "exposed", "note"],
+      "properties": {
+        "mode": { "type": "string", "const": "structure-only" },
+        "exposed": { "type": "boolean", "const": false },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "licensing": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "status", "disclosure_level", "note"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9\\-]+$" },
+          "label": { "type": "string" },
+          "status": { "type": "string", "const": "dormant" },
+          "disclosure_level": { "type": "string", "enum": ["public", "restricted", "confidential"] },
+          "note": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "commission_routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "status", "note"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9\\-]+$" },
+          "label": { "type": "string" },
+          "status": { "type": "string", "const": "dormant" },
+          "note": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "engagement_routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "status", "note"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9\\-]+$" },
+          "label": { "type": "string" },
+          "status": { "type": "string", "const": "dormant" },
+          "note": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

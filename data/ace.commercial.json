@@ -1,0 +1,47 @@
+{
+  "engine": "ACE",
+  "version": "phase-c9",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Dormant commercial surface stubs. No pricing claims. No runtime bindings."
+  },
+  "licensing": [
+    {
+      "id": "wfsl-governed-interaction-engine",
+      "label": "Governed Interaction Engine Licence",
+      "status": "dormant",
+      "disclosure_level": "restricted",
+      "note": "Capability licence outline. Details disclosed under controlled engagement."
+    },
+    {
+      "id": "wfsl-workforce-intake",
+      "label": "Workforce Intake Workflow Licence",
+      "status": "dormant",
+      "disclosure_level": "restricted",
+      "note": "Workflow licensing outline. Scope and terms governed."
+    }
+  ],
+  "commission_routes": [
+    {
+      "id": "training-referrals",
+      "label": "Training partner referrals",
+      "status": "dormant",
+      "note": "Commission terms governed by partner agreements."
+    }
+  ],
+  "engagement_routes": [
+    {
+      "id": "nda-first",
+      "label": "NDA-first engagement",
+      "status": "dormant",
+      "note": "Used for confidential disclosures."
+    },
+    {
+      "id": "verified-intake",
+      "label": "Verified intake engagement",
+      "status": "dormant",
+      "note": "Used for contractors, engineers and suppliers."
+    }
+  ]
+}
