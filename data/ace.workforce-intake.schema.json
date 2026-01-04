@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ACE Workforce Intake (Dormant)",
+  "type": "object",
+  "required": ["engine", "version", "governance", "form"],
+  "properties": {
+    "engine": { "type": "string", "const": "ACE" },
+    "version": { "type": "string" },
+    "governance": {
+      "type": "object",
+      "required": ["mode", "exposed", "note"],
+      "properties": {
+        "mode": { "type": "string", "const": "structure-only" },
+        "exposed": { "type": "boolean", "const": false },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "form": {
+      "type": "object",
+      "required": ["sections"],
+      "properties": {
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label", "fields"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^[a-z0-9\\-]+$" },
+              "label": { "type": "string" },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["id", "label", "type", "required"],
+                  "properties": {
+                    "id": { "type": "string", "pattern": "^[a-z0-9\\-]+$" },
+                    "label": { "type": "string" },
+                    "type": {
+                      "type": "string",
+                      "enum": ["text", "email", "phone", "select", "boolean", "file"]
+                    },
+                    "required": { "type": "boolean" },
+                    "options": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

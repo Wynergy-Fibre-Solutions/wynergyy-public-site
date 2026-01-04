@@ -1,0 +1,60 @@
+{
+  "engine": "ACE",
+  "version": "phase-c10",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Dormant workforce intake form definition."
+  },
+  "form": {
+    "sections": [
+      {
+        "id": "identity",
+        "label": "Identity",
+        "fields": [
+          { "id": "full-name", "label": "Full name", "type": "text", "required": true },
+          { "id": "email", "label": "Email address", "type": "email", "required": true },
+          { "id": "phone", "label": "Phone number", "type": "phone", "required": true }
+        ]
+      },
+      {
+        "id": "role",
+        "label": "Role & Experience",
+        "fields": [
+          {
+            "id": "primary-role",
+            "label": "Primary role",
+            "type": "select",
+            "required": true,
+            "options": ["Fibre engineer", "Civils engineer", "Surveyor", "Supervisor"]
+          },
+          {
+            "id": "years-experience",
+            "label": "Years of experience",
+            "type": "select",
+            "required": true,
+            "options": ["0–1", "2–4", "5–9", "10+"]
+          }
+        ]
+      },
+      {
+        "id": "compliance",
+        "label": "Compliance",
+        "fields": [
+          {
+            "id": "right-to-work",
+            "label": "Right to work in the UK",
+            "type": "boolean",
+            "required": true
+          },
+          {
+            "id": "certifications",
+            "label": "Certifications",
+            "type": "file",
+            "required": false
+          }
+        ]
+      }
+    ]
+  }
+}
