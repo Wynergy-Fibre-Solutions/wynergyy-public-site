@@ -1,48 +1,66 @@
-\# Wynergyy
+\# Wynergyy Public Site
 
 
 
-\## Overview
+This repository contains a public-facing, static declaration surface
 
-Wynergyy builds governance-first infrastructure systems for regulated and compliance-sensitive environments.
-
-
-
-\## What We Do
-
-Our work focuses on enforcement, licensing, auditability, and operational integrity across distributed systems where reliability, traceability, and control matter.
+derived from a wider internal system architecture.
 
 
 
-\## How We Work
+It exists to publish:
 
-Core systems are privately developed and governed.
+\- Operating principles
 
-Public repositories are intentionally limited to narrative, tooling, and bounded explainer surfaces.
+\- System status
 
+\- Governance schemas
 
-
-\## Why This Matters
-
-This approach protects intellectual property, reduces operational risk, and aligns with best practice in infrastructure, telecoms, and regulated sectors.
+\- Validation logic
 
 
 
-\## Engagement
-
-We share architecture, process, and outcomes.
-
-Core source systems are disclosed selectively under NDA.
+\## Scope
 
 
 
-\## Status
+Included:
 
-Active development.
+\- ACE schemas and schema validation
 
-Private core systems.
+\- Public principles and status declarations
 
-Public signal by design.
+\- Non-executable documentation
+
+
+
+Excluded:
+
+\- WyneOS operating engines
+
+\- PAMI predictive and mapping systems
+
+\- Orchestration, autonomy, cryptography
+
+\- Runtime execution and live services
+
+
+
+\## Operating Posture
+
+
+
+This repository is evidence-first.
+
+All changes are intentional, documented, and reviewable.
+
+
+
+Nothing in this repository constitutes a live service.
+
+
+
+Last reviewed: 2026-01-04 (UTC)
 
 
 
