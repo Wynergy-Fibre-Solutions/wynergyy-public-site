@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ACE Runtime Event",
+  "type": "object",
+  "required": ["id", "type", "timestamp", "pid", "details"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "runtime.start",
+        "runtime.stop",
+        "runtime.crash",
+        "runtime.lock-denied"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "pid": {
+      "type": "integer"
+    },
+    "details": {
+      "type": "object"
+    }
+  }
+}
