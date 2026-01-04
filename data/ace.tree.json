@@ -1,0 +1,73 @@
+{
+  "engine": "ACE",
+  "version": "phase-c",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Dormant expansion. No UI or logic bindings."
+  },
+  "roots": [
+    {
+      "id": "partnerships",
+      "label": "Partnerships",
+      "status": "dormant",
+      "governance_note": "Inactive. Not exposed. Structure only.",
+      "children": [
+        { "id": "delivery-partners", "label": "Delivery partners", "status": "dormant" },
+        { "id": "civils-partners", "label": "Civils partners", "status": "dormant" },
+        { "id": "technology-partners", "label": "Technology partners", "status": "dormant" },
+        { "id": "training-providers", "label": "Training providers", "status": "dormant" },
+        { "id": "public-sector-frameworks", "label": "Public sector frameworks", "status": "dormant" }
+      ]
+    },
+    {
+      "id": "contractors",
+      "label": "Contractors",
+      "status": "dormant",
+      "governance_note": "Inactive. Not exposed. Structure only.",
+      "children": [
+        { "id": "principal-contractors", "label": "Principal contractors", "status": "dormant" },
+        { "id": "sub-contractors", "label": "Sub-contractors", "status": "dormant" },
+        { "id": "approved-suppliers", "label": "Approved supplier pathways", "status": "dormant" },
+        { "id": "pre-qualification", "label": "Pre-qualification overview", "status": "dormant" }
+      ]
+    },
+    {
+      "id": "engineers",
+      "label": "Engineers",
+      "status": "dormant",
+      "governance_note": "Inactive. Not exposed. Structure only.",
+      "children": [
+        { "id": "fibre-engineers", "label": "Fibre engineers", "status": "dormant" },
+        { "id": "civils-engineers", "label": "Civils engineers", "status": "dormant" },
+        { "id": "surveyors", "label": "Surveyors", "status": "dormant" },
+        { "id": "supervisors", "label": "Supervisors", "status": "dormant" },
+        { "id": "compliance-roles", "label": "Compliance roles", "status": "dormant" }
+      ]
+    },
+    {
+      "id": "investors",
+      "label": "Investors",
+      "status": "dormant",
+      "governance_note": "Inactive. Not exposed. Structure only.",
+      "children": [
+        { "id": "strategic-investors", "label": "Strategic investors", "status": "dormant" },
+        { "id": "infrastructure-funding", "label": "Infrastructure funding", "status": "dormant" },
+        { "id": "technology-investment", "label": "Technology investment", "status": "dormant" },
+        { "id": "long-term-capital", "label": "Long-term capital alignment", "status": "dormant" }
+      ]
+    },
+    {
+      "id": "employment",
+      "label": "Employment & Agencies",
+      "status": "dormant",
+      "governance_note": "Inactive. Not exposed. Structure only.",
+      "children": [
+        { "id": "employment-agencies", "label": "Employment agencies", "status": "dormant" },
+        { "id": "dwp-pathways", "label": "DWP pathways", "status": "dormant" },
+        { "id": "training-to-work", "label": "Training-to-work pipelines", "status": "dormant" },
+        { "id": "regional-workforce", "label": "Regional workforce programmes", "status": "dormant" }
+      ]
+    }
+  ]
+}
