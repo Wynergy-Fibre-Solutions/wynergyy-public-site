@@ -9,13 +9,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = 3000;
+const SERVICE = "ace-intake";
 
 /* ================================
-   Runtime Sentinel (authoritative)
+   Runtime Sentinel
    ================================ */
 const sentinel = spawnSync(
   "node",
-  ["scripts/runtime-sentinel.js", "check", "ace-intake", String(PORT)],
+  ["scripts/runtime-sentinel.js", "check", SERVICE, String(PORT)],
   { stdio: "inherit" }
 );
 
@@ -24,10 +25,20 @@ if (sentinel.status !== 0) {
 }
 
 /* ================================
+   Claim ownership
+   ================================ */
+const LOCK_PATH = path.join(__dirname, "data/runtime", `${SERVICE}.lock.json`);
+const lock = JSON.parse(fs.readFileSync(LOCK_PATH, "utf8"));
+
+lock.pid = process.pid;
+lock.started_utc = new Date().toISOString();
+
+fs.writeFileSync(LOCK_PATH, JSON.stringify(lock, null, 2));
+
+/* ================================
    Paths
    ================================ */
-const DATA_DIR = path.join(__dirname, "data");
-const EVENT_LOG_PATH = path.join(DATA_DIR, "ace.event-log.json");
+const EVENT_LOG_PATH = path.join(__dirname, "data", "ace.event-log.json");
 
 /* ================================
    Helpers

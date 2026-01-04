@@ -40,14 +40,14 @@ if (action === "check") {
     }
   }
 
-  const lock = {
+  const reservation = {
     service,
-    pid: process.pid,
+    pid: null,
     port,
     host: os.hostname(),
-    started_utc: new Date().toISOString()
+    reserved_utc: new Date().toISOString()
   };
 
-  fs.writeFileSync(LOCK_PATH, JSON.stringify(lock, null, 2));
+  fs.writeFileSync(LOCK_PATH, JSON.stringify(reservation, null, 2));
   process.exit(0);
 }
