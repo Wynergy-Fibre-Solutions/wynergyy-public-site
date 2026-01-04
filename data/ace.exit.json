@@ -1,0 +1,10 @@
+{
+  "engine":"ACE",
+  "version":"phase-c27",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Dormant exit and continuity planning."},
+  "paths":[
+    {"id":"acquisition","status":"dormant","description":"Acquisition readiness."},
+    {"id":"licence-transfer","status":"dormant","description":"Licence transfer scenarios."},
+    {"id":"wind-down","status":"dormant","description":"Orderly wind-down procedures."}
+  ]
+}

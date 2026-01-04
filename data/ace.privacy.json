@@ -1,0 +1,6 @@
+{
+  "engine":"ACE",
+  "version":"phase-c25",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Dormant privacy controls."},
+  "controls":["gdpr-alignment","data-minimisation","retention-policy"]
+}

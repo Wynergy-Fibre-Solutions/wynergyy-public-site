@@ -1,0 +1,9 @@
+{
+  "engine":"ACE",
+  "version":"phase-c24",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Dormant SLA definitions."},
+  "slas":[
+    {"id":"delivery-response","status":"dormant","description":"Delivery response times."},
+    {"id":"issue-resolution","status":"dormant","description":"Issue resolution targets."}
+  ]
+}
