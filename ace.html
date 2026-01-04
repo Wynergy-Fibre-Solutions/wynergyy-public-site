@@ -1,278 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>ACE — Authoritative Company Explainer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <style>
-    :root {
-      --bg: #0b1020;
-      --panel: rgba(255,255,255,0.06);
-      --border: rgba(255,255,255,0.14);
-      --text: rgba(255,255,255,0.92);
-      --muted: rgba(255,255,255,0.65);
-      --accent: #2dd4ff;
-      --accent-strong: #1f3cff;
-      --online: #22c55e;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: radial-gradient(circle at top, #0f172a, #020617);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 820px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 22px;
-      box-shadow: 0 40px 120px rgba(0,0,0,0.6);
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand img {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      object-fit: cover;
-    }
-
-    .brand h1 {
-      font-size: 20px;
-      margin: 0;
-    }
-
-    .brand span {
-      display: block;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--online);
-      box-shadow: 0 0 8px var(--online);
-    }
-
-    .panel {
-      background: rgba(0,0,0,0.35);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px;
-      min-height: 320px;
-    }
-
-    .message {
-      margin-bottom: 16px;
-    }
-
-    .message p {
-      margin: 0 0 12px 0;
-    }
-
-    .choices {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    button {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px 14px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    button:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(45,212,255,0.15);
-    }
-
-    footer {
-      margin-top: 14px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--muted);
-    }
-  </style>
+<meta charset="UTF-8">
+<title>ACE — Authoritative Company Explainer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{
+  --bg:#0b1020;--panel:rgba(255,255,255,.06);--border:rgba(255,255,255,.14);
+  --text:rgba(255,255,255,.92);--muted:rgba(255,255,255,.65);
+  --accent:#2dd4ff;--accent2:#1f3cff;--online:#22c55e;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at top,#0f172a,#020617);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)
+}
+.card{
+  width:100%;max-width:860px;padding:22px;border-radius:18px;
+  background:var(--panel);border:1px solid var(--border);
+}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.brand{display:flex;gap:12px;align-items:center}
+.brand img{width:44px;height:44px;border-radius:10px;object-fit:contain;background:#000}
+.brand h1{margin:0;font-size:20px}
+.brand span{display:block;font-size:13px;color:var(--muted)}
+.status{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--online);box-shadow:0 0 8px var(--online)}
+.panel{
+  min-height:360px;padding:18px;border-radius:14px;
+  background:rgba(0,0,0,.35);border:1px solid var(--border)
+}
+.message{margin-bottom:16px}
+.message p{margin:0 0 12px 0}
+.choices{display:flex;flex-wrap:wrap;gap:10px}
+button{
+  background:transparent;border:1px solid var(--border);color:var(--text);
+  padding:8px 14px;border-radius:999px;cursor:pointer;transition:.15s
+}
+button:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 1px rgba(45,212,255,.15)}
+footer{
+  margin-top:14px;padding-top:10px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;font-size:12px;color:var(--muted)
+}
+</style>
 </head>
 
 <body>
-  <div class="card">
-    <header>
-      <div class="brand">
-        <img src="./assets/wfsl-logo.jpg" alt="WFSL logo">
-        <div>
-          <h1>ACE</h1>
-          <span>Authoritative Company Explainer</span>
-        </div>
-      </div>
-      <div class="status">
-        <span class="dot"></span>
-        ACE online
-      </div>
-    </header>
-
-    <div id="panel" class="panel"></div>
-
-    <footer>
-      <div>© Wynergy Fibre Solutions Ltd</div>
-      <div>Governed disclosure</div>
-    </footer>
+<div class="card">
+<header>
+  <div class="brand">
+    <img src="./assets/wfsl-logo.jpg" alt="WFSL logo">
+    <div>
+      <h1>ACE</h1>
+      <span>Authoritative Company Explainer</span>
+    </div>
   </div>
+  <div class="status"><span class="dot"></span>ACE online</div>
+</header>
 
-  <script>
-    const panel = document.getElementById("panel");
+<div id="panel" class="panel"></div>
 
-    const nodes = {
-      root: {
-        text: "Hello. Choose a topic to explore WFSL.",
-        options: [
-          ["About WFSL", "about"],
-          ["Engagement", "engagement"],
-          ["Telecoms delivery", "telecoms"],
-          ["Governance & compliance", "governance"]
-        ]
-      },
+<footer>
+  <div>© Wynergy Fibre Solutions Ltd</div>
+  <div>Governed disclosure</div>
+</footer>
+</div>
 
-      about: {
-        text: "WFSL designs and operates governance-first telecoms and infrastructure systems for regulated environments.",
-        options: [
-          ["Telecoms delivery", "telecoms"],
-          ["Engagement", "engagement"],
-          ["Back to start", "root"]
-        ]
-      },
+<script>
+const panel=document.getElementById("panel");
 
-      engagement: {
-        text: "Engagement is structured and governed. Architecture and outcomes are shared selectively following verified interest.",
-        options: [
-          ["Work with us", "work"],
-          ["Request NDA", "nda"],
-          ["Back to start", "root"]
-        ]
-      },
+const nodes={
+  root:{
+    t:"Hello. Choose a topic to explore WFSL.",
+    o:[
+      ["About WFSL","about"],
+      ["Engagement","engage"],
+      ["Telecoms delivery","telecoms"],
+      ["Governance & compliance","gov"]
+    ]
+  },
 
-      telecoms: {
-        text: "Delivery is structured, verified and governed across fibre, civils and infrastructure pathways.",
-        options: [
-          ["Business value", "value"],
-          ["Governance & compliance", "governance"],
-          ["Back to start", "root"]
-        ]
-      },
+  /* ABOUT */
+  about:{
+    t:"WFSL builds governance-first telecoms and infrastructure capability for regulated environments.",
+    o:[
+      ["What we do","about_do"],
+      ["Why governance-first","about_why"],
+      ["Back to start","root"]
+    ]
+  },
+  about_do:{
+    t:"We design, deploy and govern delivery across fibre, civils and operational systems.",
+    o:[
+      ["Business value","value"],
+      ["Telecoms delivery","telecoms"],
+      ["Back to About","about"]
+    ]
+  },
+  about_why:{
+    t:"Governance-first reduces delivery risk, regulatory exposure and operational ambiguity.",
+    o:[
+      ["Governance & compliance","gov"],
+      ["Engagement","engage"],
+      ["Back to About","about"]
+    ]
+  },
 
-      governance: {
-        text: "All engagement operates within lawful, auditable and controlled governance frameworks.",
-        options: [
-          ["Regulatory framework", "regulatory"],
-          ["Assets & licensing", "assets"],
-          ["Back to start", "root"]
-        ]
-      },
+  /* ENGAGEMENT */
+  engage:{
+    t:"Engagement is structured. Disclosure is selective. Outcomes are governed.",
+    o:[
+      ["Work with us","work"],
+      ["Request NDA","nda"],
+      ["Back to start","root"]
+    ]
+  },
+  work:{
+    t:"WFSL works with contractors, engineers, partners and clients through verified pathways.",
+    o:[
+      ["Contractors & engineers","work_ce"],
+      ["Partners & clients","work_pc"],
+      ["Back to Engagement","engage"]
+    ]
+  },
+  work_ce:{
+    t:"Contractors and engineers engage via compliance-aligned intake and verification.",
+    o:[
+      ["Engagement","engage"],
+      ["Back to start","root"]
+    ]
+  },
+  work_pc:{
+    t:"Partners and clients engage for governed delivery, capability or licensing.",
+    o:[
+      ["Engagement","engage"],
+      ["Back to start","root"]
+    ]
+  },
+  nda:{
+    t:"NDA access is issued following a verified expression of interest.",
+    o:[
+      ["Engagement","engage"],
+      ["Back to start","root"]
+    ]
+  },
 
-      work: {
-        text: "WFSL engages with contractors, engineers and partners through controlled intake pathways.",
-        options: [
-          ["Engagement", "engagement"],
-          ["Back to start", "root"]
-        ]
-      },
+  /* TELECOMS */
+  telecoms:{
+    t:"Delivery spans fibre, civils and managed infrastructure pathways.",
+    o:[
+      ["Fibre & civils","tel_fibre"],
+      ["Managed delivery","tel_managed"],
+      ["Back to start","root"]
+    ]
+  },
+  tel_fibre:{
+    t:"Fibre and civils delivery is structured, verified and governed end-to-end.",
+    o:[
+      ["Business value","value"],
+      ["Governance & compliance","gov"],
+      ["Back to Telecoms","telecoms"]
+    ]
+  },
+  tel_managed:{
+    t:"Managed delivery focuses on assurance, coordination and operational control.",
+    o:[
+      ["Assets & licensing","assets"],
+      ["Engagement","engage"],
+      ["Back to Telecoms","telecoms"]
+    ]
+  },
 
-      nda: {
-        text: "NDA access is issued following a verified expression of interest.",
-        options: [
-          ["Engagement", "engagement"],
-          ["Back to start", "root"]
-        ]
-      },
+  /* GOVERNANCE */
+  gov:{
+    t:"All activity operates within lawful, auditable governance frameworks.",
+    o:[
+      ["Regulatory alignment","gov_reg"],
+      ["Audit & assurance","gov_audit"],
+      ["Back to start","root"]
+    ]
+  },
+  gov_reg:{
+    t:"Delivery aligns with UK telecoms and infrastructure regulatory frameworks, including Ofcom.",
+    o:[
+      ["Audit & assurance","gov_audit"],
+      ["Back to Governance","gov"]
+    ]
+  },
+  gov_audit:{
+    t:"Auditability and assurance are built into process and tooling.",
+    o:[
+      ["Assets & licensing","assets"],
+      ["Back to Governance","gov"]
+    ]
+  },
 
-      value: {
-        text: "WFSL reduces delivery risk, improves compliance confidence and provides licensable operational capability.",
-        options: [
-          ["Assets & licensing", "assets"],
-          ["Back to start", "root"]
-        ]
-      },
+  /* VALUE / ASSETS */
+  value:{
+    t:"WFSL improves confidence, reduces risk and enables governed scale.",
+    o:[
+      ["Assets & licensing","assets"],
+      ["Engagement","engage"],
+      ["Back to start","root"]
+    ]
+  },
+  assets:{
+    t:"WFSL develops proprietary operational assets and governance systems, disclosed selectively.",
+    o:[
+      ["Engagement","engage"],
+      ["Back to start","root"]
+    ]
+  }
+};
 
-      regulatory: {
-        text: "WFSL aligns delivery with UK telecoms and infrastructure regulatory requirements, including Ofcom frameworks.",
-        options: [
-          ["Governance & compliance", "governance"],
-          ["Back to start", "root"]
-        ]
-      },
-
-      assets: {
-        text: "WFSL develops proprietary operational assets and governance systems, disclosed selectively.",
-        options: [
-          ["Engagement", "engagement"],
-          ["Back to start", "root"]
-        ]
-      }
-    };
-
-    function render(nodeKey) {
-      const node = nodes[nodeKey];
-      panel.innerHTML = "";
-
-      const msg = document.createElement("div");
-      msg.className = "message";
-      msg.innerHTML = `<p>${node.text}</p>`;
-      panel.appendChild(msg);
-
-      const choices = document.createElement("div");
-      choices.className = "choices";
-
-      node.options.forEach(([label, target]) => {
-        const btn = document.createElement("button");
-        btn.textContent = label;
-        btn.onclick = () => render(target);
-        choices.appendChild(btn);
-      });
-
-      panel.appendChild(choices);
-    }
-
-    render("root");
-  </script>
+function render(k){
+  const n=nodes[k]; panel.innerHTML="";
+  const m=document.createElement("div"); m.className="message";
+  m.innerHTML=`<p>${n.t}</p>`; panel.appendChild(m);
+  const c=document.createElement("div"); c.className="choices";
+  n.o.forEach(([l,t])=>{
+    const b=document.createElement("button"); b.textContent=l;
+    b.onclick=()=>render(t); c.appendChild(b);
+  });
+  panel.appendChild(c);
+}
+render("root");
+</script>
 </body>
 </html>
