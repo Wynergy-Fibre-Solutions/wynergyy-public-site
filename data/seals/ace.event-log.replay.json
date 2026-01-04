@@ -1,0 +1,19 @@
+{
+  "kind": "ace_kernel_replay",
+  "version": "1.0.0",
+  "time_utc": "2026-01-04T05:38:02.992Z",
+  "runtime_log_sha256": "3cf934b5c7500ae7a13b0f9edc665989cb0e364be3cdfb97c10385d7f7ff47e8",
+  "counts": {
+    "total_events": 2,
+    "valid_public_messages": 1
+  },
+  "sample": [
+    {
+      "id": "666cf35c-c4c9-4ee2-825b-daf43e26a682",
+      "time_utc": "2026-01-04T04:38:48.853Z",
+      "urls": [
+        "https://example.com/"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "kind": "ace_kernel_seal",
+  "version": "1.0.0",
+  "kernel_version": "1.0.0",
+  "time_utc": "2026-01-04T05:38:02.907Z",
+  "algorithm": "sha256",
+  "runtime_log_path": "data/runtime/ace.event-log.runtime.json",
+  "runtime_log_bytes": 884,
+  "runtime_log_sha256": "3cf934b5c7500ae7a13b0f9edc665989cb0e364be3cdfb97c10385d7f7ff47e8"
+}
