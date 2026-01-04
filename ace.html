@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>ACE — Authoritative Company Explainer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="autocomplete" content="off">
 <style>
 :root{
   --bg:#0b1020;--panel:rgba(255,255,255,.06);--border:rgba(255,255,255,.14);
@@ -18,7 +19,7 @@ body{
 }
 .card{
   width:100%;max-width:860px;padding:22px;border-radius:18px;
-  background:var(--panel);border:1px solid var(--border);
+  background:var(--panel);border:1px solid var(--border)
 }
 header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .brand{display:flex;gap:12px;align-items:center}
@@ -47,6 +48,8 @@ footer{
   margin-top:14px;padding-top:10px;border-top:1px solid var(--border);
   display:flex;justify-content:space-between;font-size:12px;color:var(--muted)
 }
+.fade-in{animation:fade .12s ease}
+@keyframes fade{from{opacity:.85}to{opacity:1}}
 </style>
 </head>
 
@@ -72,11 +75,12 @@ footer{
 </div>
 
 <script>
-const panel=document.getElementById("panel");
+"use strict";
 
-const CONTACT_URL="mailto:info@wynergy.co.uk?subject=WFSL%20Engagement%20Enquiry";
+const panel = document.getElementById("panel");
+const CONTACT_URL = "mailto:info@wynergy.co.uk?subject=WFSL%20Engagement%20Enquiry";
 
-const nodes={
+const nodes = {
   root:{t:"Hello. Choose a topic to explore WFSL.",o:[
     ["About WFSL","about"],["Engagement","engage"],
     ["Telecoms delivery","telecoms"],["Governance & compliance","gov"]
@@ -140,23 +144,34 @@ const nodes={
   ]}
 };
 
-function render(k){
+function safeNode(key){
+  return nodes[key] ? key : "root";
+}
+
+function render(key){
   panel.innerHTML="";
-  if(k==="_contact"){window.location.href=CONTACT_URL;return;}
-  const n=nodes[k];
-  const m=document.createElement("div");m.className="message";
-  m.innerHTML=`<p>${n.t}</p>`;panel.appendChild(m);
-  const c=document.createElement("div");c.className="choices";
-  n.o.forEach(([l,t])=>{
-    const b=document.createElement("button");
-    b.textContent=l;
-    if(t==="contact") b.classList.add("primary");
-    b.onclick=()=>render(t);
+  const k = safeNode(key);
+  if(k==="_contact"){ window.location.href = CONTACT_URL; return; }
+  const n = nodes[k];
+  const m = document.createElement("div");
+  m.className="message fade-in";
+  m.innerHTML = `<p>${n.t}</p>`;
+  panel.appendChild(m);
+
+  const c = document.createElement("div");
+  c.className="choices";
+  n.o.forEach(([label,target])=>{
+    const b = document.createElement("button");
+    b.textContent = label;
+    if(target==="contact") b.classList.add("primary");
+    b.onclick = ()=>render(target);
     c.appendChild(b);
   });
   panel.appendChild(c);
 }
-render("root");
+
+try { render("root"); }
+catch(e){ panel.innerHTML="<p>Reload to continue.</p>"; }
 </script>
 </body>
 </html>
