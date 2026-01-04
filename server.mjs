@@ -19,7 +19,7 @@ function safeJsonParse(text) {
   try {
     return { ok: true, value: JSON.parse(text) };
   } catch {
-    return { ok: false, value: null };
+    return { ok: false };
   }
 }
 
@@ -28,13 +28,20 @@ async function ensureRuntimeStore() {
     await mkdir(RUNTIME_DIR, { recursive: true });
   }
   if (!existsSync(EVENT_LOG_PATH)) {
-    const seed = {
-      kind: "ace_runtime_event_log",
-      version: "1.0.0",
-      created_utc: nowUtcIso(),
-      events: []
-    };
-    await writeFile(EVENT_LOG_PATH, JSON.stringify(seed, null, 2), "utf8");
+    await writeFile(
+      EVENT_LOG_PATH,
+      JSON.stringify(
+        {
+          kind: "ace_runtime_event_log",
+          version: "1.0.0",
+          created_utc: nowUtcIso(),
+          events: []
+        },
+        null,
+        2
+      ),
+      "utf8"
+    );
   }
 }
 
@@ -42,18 +49,12 @@ async function appendEvent(event) {
   await ensureRuntimeStore();
   const raw = await readFile(EVENT_LOG_PATH, "utf8");
   const parsed = safeJsonParse(raw);
-  if (!parsed.ok || !parsed.value || !Array.isArray(parsed.value.events)) {
-    const reset = {
-      kind: "ace_runtime_event_log",
-      version: "1.0.0",
-      created_utc: nowUtcIso(),
-      events: [event]
-    };
-    await writeFile(EVENT_LOG_PATH, JSON.stringify(reset, null, 2), "utf8");
-    return;
-  }
-  parsed.value.events.push(event);
-  await writeFile(EVENT_LOG_PATH, JSON.stringify(parsed.value, null, 2), "utf8");
+  const log = parsed.ok && Array.isArray(parsed.value.events)
+    ? parsed.value
+    : { kind: "ace_runtime_event_log", version: "1.0.0", created_utc: nowUtcIso(), events: [] };
+
+  log.events.push(event);
+  await writeFile(EVENT_LOG_PATH, JSON.stringify(log, null, 2), "utf8");
 }
 
 function send(res, status, headers, body) {
@@ -68,14 +69,6 @@ function sendJson(res, status, obj) {
     { "Content-Type": "application/json; charset=utf-8" },
     JSON.stringify(obj, null, 2)
   );
-}
-
-function sendHtml(res, status, html) {
-  send(res, status, { "Content-Type": "text/html; charset=utf-8" }, html);
-}
-
-async function readStatic(filePath) {
-  return readFile(join(ROOT, filePath), "utf8");
 }
 
 function collectBody(req, maxBytes = 64 * 1024) {
@@ -94,34 +87,28 @@ function collectBody(req, maxBytes = 64 * 1024) {
 
 function normaliseMessage(input) {
   const text = typeof input === "string" ? input.trim() : "";
-  if (!text) return { ok: false, reason: "empty" };
-  if (text.length > 2000) return { ok: false, reason: "too_long" };
-  return { ok: true, value: text };
+  if (!text) return null;
+  if (text.length > 2000) return null;
+  return text;
 }
 
 function extractUrls(text) {
-  const urls = [];
   const re = /\bhttps?:\/\/[^\s<>"')\]]+/gi;
-  const matches = text.match(re) || [];
-  for (const m of matches) {
-    try {
-      urls.push(new URL(m).toString());
-    } catch {}
-  }
-  return Array.from(new Set(urls)).slice(0, 10);
+  return Array.from(new Set((text.match(re) || []).map(u => {
+    try { return new URL(u).toString(); } catch { return null; }
+  }).filter(Boolean))).slice(0, 10);
 }
 
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
-    const path = url.pathname;
 
-    if (path === "/api/health" && req.method === "GET") {
+    if (url.pathname === "/api/health" && req.method === "GET") {
       sendJson(res, 200, { ok: true, time_utc: nowUtcIso() });
       return;
     }
 
-    if (path === "/api/message" && req.method === "POST") {
+    if (url.pathname === "/api/message" && req.method === "POST") {
       const raw = await collectBody(req);
       const parsed = safeJsonParse(raw);
       if (!parsed.ok) {
@@ -129,23 +116,34 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
-      const msg = normaliseMessage(parsed.value?.message);
-      if (!msg.ok) {
-        sendJson(res, 400, { ok: false, error: msg.reason });
+      const messageText = normaliseMessage(parsed.value?.message);
+      if (!messageText) {
+        sendJson(res, 400, { ok: false, error: "invalid_message" });
         return;
       }
 
-      const event = {
+      const message = {
+        kind: "ace_public_message",
+        version: "1.0.0",
         id: randomUUID(),
-        kind: "public_message_received",
         time_utc: nowUtcIso(),
-        message: msg.value,
-        urls: extractUrls(msg.value)
+        source: "public_site",
+        message: messageText,
+        urls: extractUrls(messageText),
+        trust: {
+          score: 0,
+          signals: []
+        },
+        provenance: {
+          channel: "public",
+          engine: "ace-intake",
+          sealed: false
+        }
       };
 
-      await appendEvent(event);
+      await appendEvent(message);
 
-      sendJson(res, 200, { ok: true, id: event.id });
+      sendJson(res, 200, { ok: true, id: message.id });
       return;
     }
 
@@ -156,5 +154,4 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, "127.0.0.1");
-
-console.log(`ACE message intake listening on http://127.0.0.1:${PORT}`);
+console.log(`ACE intake listening on http://127.0.0.1:${PORT}`);
