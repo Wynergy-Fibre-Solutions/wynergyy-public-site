@@ -1,0 +1,27 @@
+# Runtime / generated ACE artefacts
+data/ace.dry-run.json
+data/ace.event-log.json
+data/ace.observability.json
+data/ace.readiness.json
+
+# OS noise
+Thumbs.db
+.DS_Store
+
+# Editor noise
+*.log
+# Runtime / generated ACE artefacts
+data/ace.dry-run.json
+data/ace.event-log.json
+data/ace.observability.json
+data/ace.readiness.json
+
+# Vercel
+.vercel/
+
+# OS noise
+Thumbs.db
+.DS_Store
+
+# Editor noise
+*.log
