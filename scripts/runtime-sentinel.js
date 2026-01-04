@@ -1,53 +1,48 @@
-#!/usr/bin/env node
-
 import fs from "fs";
-import os from "os";
-import path from "path";
-import process from "process";
+import crypto from "crypto";
 
-const [, , action, service, portArg] = process.argv;
-const port = Number(portArg);
+const [, , command, service, port] = process.argv;
+const RUNTIME_DIR = "data/runtime";
+const EVENTS_FILE = `${RUNTIME_DIR}/${service}.runtime.json`;
 
-if (!action || !service || !port) {
-  console.error("usage: runtime-sentinel.js check <service> <port>");
-  process.exit(2);
-}
+fs.mkdirSync(RUNTIME_DIR, { recursive: true });
 
-const RUNTIME_DIR = path.resolve("data/runtime");
-const LOCK_PATH = path.join(RUNTIME_DIR, `${service}.lock.json`);
-
-if (!fs.existsSync(RUNTIME_DIR)) {
-  fs.mkdirSync(RUNTIME_DIR, { recursive: true });
-}
-
-function pidAlive(pid) {
-  try {
-    process.kill(pid, 0);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-if (action === "check") {
-  if (fs.existsSync(LOCK_PATH)) {
-    const lock = JSON.parse(fs.readFileSync(LOCK_PATH, "utf8"));
-    if (lock.pid && pidAlive(lock.pid)) {
-      console.error(
-        `runtime-sentinel: ${service} already running (pid ${lock.pid}, port ${lock.port})`
-      );
-      process.exit(1);
-    }
-  }
-
-  const reservation = {
-    service,
-    pid: null,
-    port,
-    host: os.hostname(),
-    reserved_utc: new Date().toISOString()
+function emit(type, details = {}) {
+  const event = {
+    id: crypto.randomUUID(),
+    type,
+    timestamp: new Date().toISOString(),
+    pid: process.pid,
+    details
   };
 
-  fs.writeFileSync(LOCK_PATH, JSON.stringify(reservation, null, 2));
-  process.exit(0);
+  const existing = fs.existsSync(EVENTS_FILE)
+    ? JSON.parse(fs.readFileSync(EVENTS_FILE, "utf8"))
+    : [];
+
+  existing.push(event);
+  fs.writeFileSync(EVENTS_FILE, JSON.stringify(existing, null, 2));
+}
+
+if (command === "check") {
+  try {
+    const net = await import("net");
+    const tester = net.createServer();
+
+    tester.once("error", () => {
+      emit("runtime.lock-denied", { port });
+      process.exit(1);
+    });
+
+    tester.once("listening", () => {
+      tester.close();
+      emit("runtime.start", { port });
+      process.exit(0);
+    });
+
+    tester.listen(port, "127.0.0.1");
+  } catch {
+    emit("runtime.crash", { stage: "sentinel-check" });
+    process.exit(1);
+  }
 }
