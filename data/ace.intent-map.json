@@ -1,0 +1,41 @@
+{
+  "engine": "ACE",
+  "version": "phase-c5",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Dormant intent-to-role mapping. No runtime bindings."
+  },
+  "intents": [
+    {
+      "id": "client-intent",
+      "role": "client",
+      "active": false,
+      "keywords": ["client", "delivery", "partner", "project", "build"]
+    },
+    {
+      "id": "engineer-intent",
+      "role": "engineer",
+      "active": false,
+      "keywords": ["engineer", "contractor", "job", "work", "fibre", "civils"]
+    },
+    {
+      "id": "investor-intent",
+      "role": "investor",
+      "active": false,
+      "keywords": ["investor", "investment", "funding", "capital", "lender"]
+    },
+    {
+      "id": "technology-intent",
+      "role": "technology-partner",
+      "active": false,
+      "keywords": ["software", "technology", "platform", "integration", "api"]
+    },
+    {
+      "id": "regulator-intent",
+      "role": "regulator",
+      "active": false,
+      "keywords": ["regulation", "compliance", "ofcom", "audit", "policy"]
+    }
+  ]
+}

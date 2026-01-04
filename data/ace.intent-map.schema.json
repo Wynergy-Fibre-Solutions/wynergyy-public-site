@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ACE Intent Map (Dormant)",
+  "type": "object",
+  "required": ["engine", "version", "governance", "intents"],
+  "properties": {
+    "engine": { "type": "string", "const": "ACE" },
+    "version": { "type": "string" },
+    "governance": {
+      "type": "object",
+      "required": ["mode", "exposed", "note"],
+      "properties": {
+        "mode": { "type": "string", "const": "structure-only" },
+        "exposed": { "type": "boolean", "const": false },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "intents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "role", "active", "keywords"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9\\-]+$" },
+          "role": { "type": "string" },
+          "active": { "type": "boolean", "const": false },
+          "keywords": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
