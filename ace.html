@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <title>ACE — Authoritative Company Explainer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="autocomplete" content="off">
 <style>
 :root{
-  --bg:#0b1020;
+  --bg:#020617;
   --panel:rgba(255,255,255,.06);
   --border:rgba(255,255,255,.14);
   --text:rgba(255,255,255,.92);
@@ -18,15 +17,15 @@
 }
 *{box-sizing:border-box}
 body{
-  margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+  margin:0;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
   background:radial-gradient(circle at top,#0f172a,#020617);
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--text)
 }
 .card{
-  width:100%;
-  max-width:860px;
-  padding:22px;
-  border-radius:18px;
+  width:100%;max-width:860px;
+  padding:22px;border-radius:18px;
   background:var(--panel);
   border:1px solid var(--border)
 }
@@ -35,47 +34,71 @@ header{
 }
 .brand{display:flex;gap:12px;align-items:center}
 .brand img{
-  width:44px;height:44px;border-radius:10px;object-fit:contain;background:#000
+  width:44px;height:44px;border-radius:10px;
+  object-fit:contain;background:#000
 }
 .brand h1{margin:0;font-size:20px}
 .brand span{display:block;font-size:13px;color:var(--muted)}
 .status{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
-.dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--online);box-shadow:0 0 8px var(--online)
-}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--online);box-shadow:0 0 8px var(--online)}
+
 .panel{
-  min-height:360px;padding:18px;border-radius:14px;
-  background:rgba(0,0,0,.35);border:1px solid var(--border);overflow:auto
+  min-height:360px;
+  padding:18px;
+  border-radius:14px;
+  background:rgba(0,0,0,.35);
+  border:1px solid var(--border);
+  overflow:auto;
+  pointer-events:auto
 }
 .message{margin-bottom:16px}
 .message p{margin:0 0 12px 0}
 .choices{display:flex;flex-wrap:wrap;gap:10px}
 button{
-  background:transparent;border:1px solid var(--border);color:var(--text);
-  padding:8px 14px;border-radius:999px;cursor:pointer;transition:.15s
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:8px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:.15s
 }
 button:hover{border-color:var(--accent);color:var(--accent)}
-button.primary{
-  background:linear-gradient(135deg,var(--accent2),var(--accent));
-  color:#000;border:none;font-weight:700
+
+.inputbar{
+  margin-top:14px;
+  display:flex;
+  gap:12px
 }
-.footer{
-  margin-top:14px;padding-top:10px;border-top:1px solid var(--border);
-  display:flex;justify-content:space-between;font-size:12px;color:var(--muted)
-}
-form{margin-top:14px;display:flex;gap:12px}
 input{
-  flex:1;height:44px;border-radius:12px;border:1px solid var(--border);
-  background:rgba(0,0,0,.35);color:var(--text);padding:0 14px;outline:none
+  flex:1;height:44px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(0,0,0,.35);
+  color:var(--text);
+  padding:0 14px;
+  outline:none
 }
 input:focus{border-color:var(--accent)}
 .send{
-  height:44px;padding:0 18px;border-radius:12px;border:none;
-  font-weight:800;color:#000;cursor:pointer;
+  height:44px;
+  padding:0 18px;
+  border-radius:12px;
+  border:none;
+  font-weight:800;
+  cursor:pointer;
+  color:#000;
   background:linear-gradient(135deg,var(--accent2),var(--accent))
 }
-.hint{margin-top:8px;font-size:12px;color:var(--muted)}
+.footer{
+  margin-top:14px;
+  padding-top:10px;
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  color:var(--muted)
+}
 </style>
 </head>
 
@@ -94,18 +117,13 @@ input:focus{border-color:var(--accent)}
 
   <div id="panel" class="panel"></div>
 
-  <form id="aceForm" autocomplete="off">
+  <div class="inputbar">
     <input id="aceInput"
-      type="text"
       placeholder="Ask a question or choose an option"
       autocomplete="off"
-      autocorrect="off"
-      autocapitalize="off"
       spellcheck="false">
-    <button class="send" type="submit">Send</button>
-  </form>
-
-  <div class="hint">Governed responses. Free text is mapped to approved topics.</div>
+    <button id="sendBtn" class="send">Send</button>
+  </div>
 
   <div class="footer">
     <div>© Wynergy Fibre Solutions Ltd</div>
@@ -116,81 +134,93 @@ input:focus{border-color:var(--accent)}
 <script>
 "use strict";
 
-const panel=document.getElementById("panel");
-const input=document.getElementById("aceInput");
-const form=document.getElementById("aceForm");
+const panel = document.getElementById("panel");
+const input = document.getElementById("aceInput");
+const sendBtn = document.getElementById("sendBtn");
 
-const TREE={
-root:{t:"Hello. Choose a topic to explore WFSL.",o:[
-["About WFSL","about"],["Engagement","engage"],["Telecoms delivery","telecoms"],["Governance & compliance","gov"]
-]},
-about:{t:"WFSL builds governance-first telecoms and infrastructure capability for regulated environments.",o:[
-["What we do","about_do"],["Why governance-first","about_why"],["Back to start","root"]
-]},
-about_do:{t:"We design, deploy and govern delivery across fibre, civils and operational systems.",o:[
-["Business value","value"],["Telecoms delivery","telecoms"],["Back","about"]
-]},
-about_why:{t:"Governance-first reduces delivery risk, regulatory exposure and ambiguity.",o:[
-["Governance & compliance","gov"],["Back","about"]
-]},
-engage:{t:"Engagement is structured. Disclosure is selective.",o:[
-["Work with us","work"],["Request NDA","nda"],["Back","root"]
-]},
-work:{t:"WFSL works with contractors, engineers and partners via verified pathways.",o:[
-["Back","engage"]
-]},
-nda:{t:"NDA access follows a verified expression of interest.",o:[
-["Back","engage"]
-]},
-telecoms:{t:"Delivery spans fibre, civils and managed infrastructure.",o:[
-["Business value","value"],["Back","root"]
-]},
-gov:{t:"All activity operates within lawful, auditable governance frameworks.",o:[
-["Back","root"]
-]},
-value:{t:"WFSL reduces risk and enables governed scale.",o:[
-["Back","root"]
-]}
+const TREE = {
+  root:{t:"Hello. Choose a topic to explore WFSL.",o:[
+    ["About WFSL","about"],
+    ["Engagement","engage"],
+    ["Telecoms delivery","telecoms"],
+    ["Governance & compliance","gov"]
+  ]},
+  about:{t:"WFSL builds governance-first telecoms and infrastructure capability for regulated environments.",o:[
+    ["What we do","do"],
+    ["Why governance-first","why"],
+    ["Back to start","root"]
+  ]},
+  do:{t:"We design, deploy and govern delivery across fibre, civils and operational systems.",o:[
+    ["Back","about"]
+  ]},
+  why:{t:"Governance-first reduces delivery risk, regulatory exposure and ambiguity.",o:[
+    ["Back","about"]
+  ]},
+  engage:{t:"Engagement is structured. Disclosure is selective.",o:[
+    ["Work with us","work"],
+    ["Request NDA","nda"],
+    ["Back","root"]
+  ]},
+  work:{t:"WFSL works with contractors, engineers and partners via verified pathways.",o:[
+    ["Back","engage"]
+  ]},
+  nda:{t:"NDA access follows a verified expression of interest.",o:[
+    ["Back","engage"]
+  ]},
+  telecoms:{t:"Delivery spans fibre, civils and managed infrastructure.",o:[
+    ["Back","root"]
+  ]},
+  gov:{t:"All activity operates within lawful, auditable governance frameworks.",o:[
+    ["Back","root"]
+  ]}
 };
 
 function render(key){
-  const n=TREE[key]||TREE.root;
-  panel.innerHTML="";
-  const m=document.createElement("div");
-  m.className="message";
-  m.innerHTML=`<p>${n.t}</p>`;
-  panel.appendChild(m);
-  const c=document.createElement("div");
-  c.className="choices";
-  n.o.forEach(([l,t])=>{
-    const b=document.createElement("button");
-    b.type="button";
-    b.textContent=l;
-    b.onclick=()=>render(t);
-    c.appendChild(b);
+  const n = TREE[key] || TREE.root;
+  panel.innerHTML = "";
+  const msg = document.createElement("div");
+  msg.className = "message";
+  msg.innerHTML = `<p>${n.t}</p>`;
+  panel.appendChild(msg);
+
+  const choices = document.createElement("div");
+  choices.className = "choices";
+  n.o.forEach(([label,target])=>{
+    const b = document.createElement("button");
+    b.textContent = label;
+    b.onclick = ()=>render(target);
+    choices.appendChild(b);
   });
-  panel.appendChild(c);
+  panel.appendChild(choices);
 }
 
-function mapText(t){
-  t=t.toLowerCase();
-  if(t.includes("nda"))return"nda";
-  if(t.includes("govern")||t.includes("compliance"))return"gov";
-  if(t.includes("telecom")||t.includes("fibre"))return"telecoms";
-  if(t.includes("work")||t.includes("job")||t.includes("engineer"))return"engage";
-  if(t.includes("value")||t.includes("worth"))return"value";
-  if(t.includes("about")||t.includes("who"))return"about";
+function mapText(v){
+  v=v.toLowerCase();
+  if(v.includes("nda"))return"nda";
+  if(v.includes("govern")||v.includes("compliance"))return"gov";
+  if(v.includes("telecom")||v.includes("fibre"))return"telecoms";
+  if(v.includes("work")||v.includes("job")||v.includes("engineer"))return"engage";
+  if(v.includes("about")||v.includes("who"))return"about";
   return"root";
 }
 
-form.addEventListener("submit",e=>{
-  e.preventDefault();
-  const v=input.value.trim();
+function send(){
+  const v = input.value.trim();
+  if(!v)return;
   input.value="";
   render(mapText(v));
+}
+
+sendBtn.onclick = send;
+input.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    e.preventDefault();
+    send();
+  }
 });
 
 render("root");
+input.focus();
 </script>
 </body>
 </html>
