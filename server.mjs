@@ -18,10 +18,9 @@ const LOCK_PATH = path.join(RUNTIME_DIR, `${SERVICE}.lock.json`);
 const EVENT_LOG_PATH = path.join(DATA_DIR, "ace.event-log.json");
 
 /* ================================
-   Runtime preparation
+   Directories
 ================================ */
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-if (!fs.existsSync(RUNTIME_DIR)) fs.mkdirSync(RUNTIME_DIR, { recursive: true });
+fs.mkdirSync(RUNTIME_DIR, { recursive: true });
 
 /* ================================
    Runtime Sentinel
@@ -32,9 +31,7 @@ const sentinel = spawnSync(
   { stdio: "inherit" }
 );
 
-if (sentinel.status !== 0) {
-  process.exit(1);
-}
+if (sentinel.status !== 0) process.exit(1);
 
 /* ================================
    Claim ownership
@@ -57,157 +54,78 @@ fs.writeFileSync(
 /* ================================
    Helpers
 ================================ */
-function nowUtcIso() {
-  return new Date().toISOString();
-}
+const nowUtcIso = () => new Date().toISOString();
+const extractUrls = t => t.match(/https?:\/\/[^\s]+/g) ?? [];
 
-function extractUrls(text) {
-  return text.match(/https?:\/\/[^\s]+/g) ?? [];
-}
-
-function sendJson(res, status, obj) {
-  res.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
-  res.end(JSON.stringify(obj, null, 2));
-}
-
-function readEventLog() {
+function readLog() {
   if (!fs.existsSync(EVENT_LOG_PATH)) {
-    return {
-      engine: "ACE",
-      version: "phase-4",
-      created_utc: nowUtcIso(),
-      events: []
-    };
+    return { engine: "ACE", version: "phase-4", events: [] };
   }
   return JSON.parse(fs.readFileSync(EVENT_LOG_PATH, "utf8"));
 }
 
 function appendEvent(event) {
-  const log = readEventLog();
+  const log = readLog();
   log.events.push(event);
   fs.writeFileSync(EVENT_LOG_PATH, JSON.stringify(log, null, 2));
 }
 
-function parseJsonBody(req, limit = 65536) {
-  return new Promise((resolve, reject) => {
-    let body = "";
-    let size = 0;
-
-    req.on("data", chunk => {
-      size += chunk.length;
-      if (size > limit) {
-        reject(new Error("payload_too_large"));
-        req.destroy();
-      }
-      body += chunk;
-    });
-
-    req.on("end", () => {
-      try {
-        resolve(JSON.parse(body || "{}"));
-      } catch {
-        reject(new Error("invalid_json"));
-      }
-    });
-  });
+function sendJson(res, status, obj) {
+  res.writeHead(status, { "Content-Type": "application/json" });
+  res.end(JSON.stringify(obj, null, 2));
 }
 
 /* ================================
    Server
 ================================ */
 const server = http.createServer(async (req, res) => {
-  try {
-    if (req.method === "GET" && req.url === "/api/health") {
-      sendJson(res, 200, {
-        ok: true,
-        service: SERVICE,
-        pid: process.pid,
-        time_utc: nowUtcIso()
-      });
-      return;
-    }
-
-    if (req.method === "POST" && req.url === "/api/kernel/event") {
-      const body = await parseJsonBody(req);
-
-      if (!body.type) {
-        sendJson(res, 400, { ok: false, error: "missing_type" });
-        return;
-      }
-
-      const event = {
-        id: crypto.randomUUID(),
-        kind: "kernel.event",
-        type: String(body.type),
-        actor: String(body.actor ?? "system"),
-        subject: String(body.subject ?? "unspecified"),
-        text: String(body.text ?? ""),
-        urls: extractUrls(String(body.text ?? "")),
-        payload: body.payload ?? {},
-        created_utc: nowUtcIso(),
-        provenance: {
-          engine: SERVICE,
-          sealed: false
-        }
-      };
-
-      appendEvent(event);
-      sendJson(res, 200, { ok: true, id: event.id });
-      return;
-    }
-
-    if (req.method === "POST" && req.url === "/api/message") {
-      const body = await parseJsonBody(req);
-      const text = String(body.message ?? "").trim();
-
-      if (!text) {
-        sendJson(res, 400, { ok: false, error: "empty_message" });
-        return;
-      }
-
-      const event = {
-        id: crypto.randomUUID(),
-        kind: "kernel.event",
-        type: "ace.message",
-        actor: "public",
-        subject: "message",
-        text,
-        urls: extractUrls(text),
-        payload: {},
-        created_utc: nowUtcIso(),
-        provenance: {
-          engine: SERVICE,
-          sealed: false
-        }
-      };
-
-      appendEvent(event);
-      sendJson(res, 200, { ok: true, id: event.id });
-      return;
-    }
-
-    sendJson(res, 404, { ok: false, error: "not_found" });
-  } catch (err) {
-    sendJson(res, 500, { ok: false, error: "server_error" });
+  if (req.method === "GET" && req.url === "/api/health") {
+    return sendJson(res, 200, { ok: true, pid: process.pid, time_utc: nowUtcIso() });
   }
+
+  if (req.method === "POST" && req.url === "/api/kernel/event") {
+    let body = "";
+    req.on("data", c => (body += c));
+    req.on("end", () => {
+      const input = JSON.parse(body || "{}");
+      if (!input.type) return sendJson(res, 400, { ok: false });
+
+      const event = {
+        id: crypto.randomUUID(),
+        type: input.type,
+        actor: input.actor ?? "system",
+        subject: input.subject ?? "unknown",
+        text: input.text ?? "",
+        urls: extractUrls(input.text ?? ""),
+        payload: input.payload ?? {},
+        created_utc: nowUtcIso()
+      };
+
+      appendEvent(event);
+      sendJson(res, 200, { ok: true, id: event.id });
+    });
+    return;
+  }
+
+  sendJson(res, 404, { ok: false });
 });
 
 /* ================================
-   Deterministic shutdown
+   Shutdown (safe)
 ================================ */
-function shutdown(reason) {
+function cleanup(reason) {
   try {
     if (fs.existsSync(LOCK_PATH)) fs.unlinkSync(LOCK_PATH);
   } catch {}
-
   console.log(`ACE shutdown (${reason})`);
-  process.exit(0);
 }
 
-process.on("SIGINT", () => shutdown("SIGINT"));
-process.on("SIGTERM", () => shutdown("SIGTERM"));
-process.on("exit", () => shutdown("exit"));
+process.on("SIGINT", () => cleanup("SIGINT"));
+process.on("SIGTERM", () => cleanup("SIGTERM"));
 
+/* ================================
+   Listen
+================================ */
 server.listen(PORT, HOST, () => {
   console.log(`ACE intake listening on http://${HOST}:${PORT}`);
 });
