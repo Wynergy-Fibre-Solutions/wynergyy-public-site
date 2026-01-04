@@ -1,0 +1,29 @@
+{
+  "engine": "ACE",
+  "version": "phase-c8",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Dormant activation orchestration. Defines safe enablement order."
+  },
+  "activation_sequences": [
+    {
+      "id": "role-activation",
+      "description": "Safe role exposure sequence",
+      "steps": [
+        { "order": 1, "component": "ace.role-activation", "require": "all-false" },
+        { "order": 2, "component": "ace.role-evidence", "require": "exists" },
+        { "order": 3, "component": "ace.intent-map", "require": "exists" }
+      ]
+    },
+    {
+      "id": "evidence-exposure",
+      "description": "Evidence exposure sequence",
+      "steps": [
+        { "order": 1, "component": "ace.evidence", "require": "exists" },
+        { "order": 2, "component": "ace.risk-disclosure", "require": "exists" },
+        { "order": 3, "component": "nda-gate", "require": "active" }
+      ]
+    }
+  ]
+}

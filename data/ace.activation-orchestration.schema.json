@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ACE Activation Orchestration Map",
+  "type": "object",
+  "required": ["engine", "version", "governance", "activation_sequences"],
+  "properties": {
+    "engine": { "type": "string", "const": "ACE" },
+    "version": { "type": "string" },
+    "governance": {
+      "type": "object",
+      "required": ["mode", "exposed", "note"],
+      "properties": {
+        "mode": { "type": "string", "const": "structure-only" },
+        "exposed": { "type": "boolean", "const": false },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "activation_sequences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "steps"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["order", "component", "require"],
+              "properties": {
+                "order": { "type": "integer", "minimum": 1 },
+                "component": { "type": "string" },
+                "require": { "type": "string" }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
