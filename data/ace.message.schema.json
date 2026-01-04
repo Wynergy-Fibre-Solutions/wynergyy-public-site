@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ACE Public Message",
+  "type": "object",
+  "required": [
+    "kind",
+    "version",
+    "id",
+    "time_utc",
+    "source",
+    "message",
+    "urls",
+    "trust",
+    "provenance"
+  ],
+  "properties": {
+    "kind": { "const": "ace_public_message" },
+    "version": { "type": "string" },
+    "id": { "type": "string" },
+    "time_utc": { "type": "string", "format": "date-time" },
+    "source": { "type": "string" },
+    "message": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "urls": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" }
+    },
+    "trust": {
+      "type": "object",
+      "required": ["score", "signals"],
+      "properties": {
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "signals": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["channel", "engine", "sealed"],
+      "properties": {
+        "channel": { "type": "string" },
+        "engine": { "type": "string" },
+        "sealed": { "type": "boolean" }
+      }
+    }
+  }
+}

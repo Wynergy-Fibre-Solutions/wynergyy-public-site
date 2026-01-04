@@ -1,0 +1,18 @@
+{
+  "kind": "ace_public_message",
+  "version": "1.0.0",
+  "id": "",
+  "time_utc": "",
+  "source": "public_site",
+  "message": "",
+  "urls": [],
+  "trust": {
+    "score": 0,
+    "signals": []
+  },
+  "provenance": {
+    "channel": "public",
+    "engine": "ace-intake",
+    "sealed": false
+  }
+}
