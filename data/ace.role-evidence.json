@@ -1,0 +1,47 @@
+{
+  "engine": "ACE",
+  "version": "phase-c3",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Dormant role-to-evidence mapping. No UI or runtime bindings."
+  },
+  "roles": [
+    {
+      "id": "client",
+      "label": "Client / Delivery Partner",
+      "status": "dormant",
+      "evidence_domains": ["governance", "delivery", "commercial"]
+    },
+    {
+      "id": "engineer",
+      "label": "Engineer / Contractor",
+      "status": "dormant",
+      "evidence_domains": ["workforce", "delivery", "governance"]
+    },
+    {
+      "id": "investor",
+      "label": "Investor / Lender",
+      "status": "dormant",
+      "evidence_domains": ["governance", "commercial", "technology"]
+    },
+    {
+      "id": "technology-partner",
+      "label": "Technology / Software Partner",
+      "status": "dormant",
+      "evidence_domains": ["technology", "governance"]
+    },
+    {
+      "id": "regulator",
+      "label": "Regulator / Compliance",
+      "status": "dormant",
+      "evidence_domains": ["governance"]
+    },
+    {
+      "id": "general",
+      "label": "General / Exploratory",
+      "status": "dormant",
+      "evidence_domains": []
+    }
+  ]
+}
