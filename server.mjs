@@ -10,6 +10,7 @@ const __dirname = path.dirname(__filename);
 
 const PORT = 3000;
 const SERVICE = "ace-intake";
+const LOCK_PATH = path.join(__dirname, "data/runtime", `${SERVICE}.lock.json`);
 
 /* ================================
    Runtime Sentinel
@@ -27,18 +28,10 @@ if (sentinel.status !== 0) {
 /* ================================
    Claim ownership
    ================================ */
-const LOCK_PATH = path.join(__dirname, "data/runtime", `${SERVICE}.lock.json`);
 const lock = JSON.parse(fs.readFileSync(LOCK_PATH, "utf8"));
-
 lock.pid = process.pid;
 lock.started_utc = new Date().toISOString();
-
 fs.writeFileSync(LOCK_PATH, JSON.stringify(lock, null, 2));
-
-/* ================================
-   Paths
-   ================================ */
-const EVENT_LOG_PATH = path.join(__dirname, "data", "ace.event-log.json");
 
 /* ================================
    Helpers
@@ -48,39 +41,31 @@ function nowUtcIso() {
 }
 
 function extractUrls(text) {
-  const regex = /(https?:\/\/[^\s]+)/g;
-  return text.match(regex) ?? [];
-}
-
-function send(res, status, headers, body) {
-  res.writeHead(status, headers);
-  res.end(body);
+  return text.match(/https?:\/\/[^\s]+/g) ?? [];
 }
 
 function sendJson(res, status, obj) {
-  send(
-    res,
-    status,
-    { "Content-Type": "application/json; charset=utf-8" },
-    JSON.stringify(obj, null, 2)
-  );
+  res.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
+  res.end(JSON.stringify(obj, null, 2));
 }
 
-async function appendEvent(event) {
-  const reset = {
+function appendEvent(event) {
+  const payload = {
     kind: "ace_runtime_event_log",
     version: "1.0.0",
     created_utc: nowUtcIso(),
     events: [event]
   };
-
-  fs.writeFileSync(EVENT_LOG_PATH, JSON.stringify(reset, null, 2), "utf8");
+  fs.writeFileSync(
+    path.join(__dirname, "data", "ace.event-log.json"),
+    JSON.stringify(payload, null, 2)
+  );
 }
 
 /* ================================
    Server
    ================================ */
-const server = http.createServer(async (req, res) => {
+const server = http.createServer((req, res) => {
   try {
     if (req.method === "GET" && req.url === "/api/health") {
       sendJson(res, 200, { ok: true, time_utc: nowUtcIso() });
@@ -89,31 +74,24 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === "POST" && req.url === "/api/message") {
       let body = "";
-      req.on("data", chunk => (body += chunk));
-      req.on("end", async () => {
-        const parsed = JSON.parse(body);
-        const messageText = String(parsed.message ?? "").trim();
-
-        if (!messageText) {
+      req.on("data", c => (body += c));
+      req.on("end", () => {
+        const text = String(JSON.parse(body).message ?? "").trim();
+        if (!text) {
           sendJson(res, 400, { ok: false, error: "empty_message" });
           return;
         }
 
-        const message = {
+        const msg = {
           id: crypto.randomUUID(),
           created_utc: nowUtcIso(),
-          text: messageText,
-          urls: extractUrls(messageText),
-          trust: { score: 0, signals: [] },
-          provenance: {
-            channel: "public",
-            engine: "ace-intake",
-            sealed: false
-          }
+          text,
+          urls: extractUrls(text),
+          provenance: { channel: "public", engine: SERVICE, sealed: false }
         };
 
-        await appendEvent(message);
-        sendJson(res, 200, { ok: true, id: message.id });
+        appendEvent(msg);
+        sendJson(res, 200, { ok: true, id: msg.id });
       });
       return;
     }
@@ -125,7 +103,28 @@ const server = http.createServer(async (req, res) => {
 });
 
 /* ================================
+   Lifecycle cleanup
+   ================================ */
+function shutdown(reason) {
+  if (fs.existsSync(LOCK_PATH)) {
+    fs.unlinkSync(LOCK_PATH);
+  }
+  console.log(`ACE shutdown (${reason})`);
+  process.exit(0);
+}
+
+process.on("SIGINT", () => shutdown("SIGINT"));
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("exit", () => shutdown("exit"));
+
+server.on("error", err => {
+  console.error("server error:", err.message);
+  shutdown("error");
+});
+
+/* ================================
    Listen
    ================================ */
-server.listen(PORT, "127.0.0.1");
-console.log(`ACE intake listening on http://127.0.0.1:${PORT}`);
+server.listen(PORT, "127.0.0.1", () => {
+  console.log(`ACE intake listening on http://127.0.0.1:${PORT}`);
+});
