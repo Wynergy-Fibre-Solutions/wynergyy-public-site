@@ -1,0 +1,58 @@
+{
+  "engine": "ACE",
+  "version": "phase-c2",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Dormant evidence hooks. No UI or runtime bindings."
+  },
+  "evidence_domains": [
+    {
+      "id": "governance",
+      "label": "Governance & Compliance",
+      "status": "dormant",
+      "items": [
+        { "id": "policies", "label": "Policies & controls", "type": "document", "status": "dormant" },
+        { "id": "audit", "label": "Audit artefacts", "type": "document", "status": "dormant" },
+        { "id": "regulatory", "label": "Regulatory references", "type": "link", "status": "dormant" }
+      ]
+    },
+    {
+      "id": "delivery",
+      "label": "Delivery Capability",
+      "status": "dormant",
+      "items": [
+        { "id": "processes", "label": "Delivery processes", "type": "document", "status": "dormant" },
+        { "id": "assurance", "label": "Assurance evidence", "type": "document", "status": "dormant" }
+      ]
+    },
+    {
+      "id": "technology",
+      "label": "Technology & Software",
+      "status": "dormant",
+      "items": [
+        { "id": "repositories", "label": "Source repositories", "type": "repo", "status": "dormant" },
+        { "id": "architecture", "label": "Architecture diagrams", "type": "document", "status": "dormant" },
+        { "id": "licensing", "label": "Licensing artefacts", "type": "document", "status": "dormant" }
+      ]
+    },
+    {
+      "id": "workforce",
+      "label": "Workforce & Training",
+      "status": "dormant",
+      "items": [
+        { "id": "certifications", "label": "Certifications", "type": "certificate", "status": "dormant" },
+        { "id": "competency", "label": "Competency matrices", "type": "document", "status": "dormant" }
+      ]
+    },
+    {
+      "id": "commercial",
+      "label": "Commercial & Finance",
+      "status": "dormant",
+      "items": [
+        { "id": "assured-pay", "label": "Assured Pay framework", "type": "document", "status": "dormant" },
+        { "id": "contracts", "label": "Contract templates", "type": "document", "status": "dormant" }
+      ]
+    }
+  ]
+}
