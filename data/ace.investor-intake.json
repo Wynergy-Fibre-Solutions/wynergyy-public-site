@@ -1,0 +1,40 @@
+{
+  "engine": "ACE",
+  "version": "phase-c12",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Dormant investor and lender intake definition."
+  },
+  "form": {
+    "sections": [
+      {
+        "id": "identity",
+        "label": "Identity",
+        "fields": [
+          { "id": "name", "label": "Name", "type": "text", "required": true },
+          { "id": "organisation", "label": "Organisation", "type": "text", "required": true },
+          { "id": "email", "label": "Email", "type": "email", "required": true }
+        ]
+      },
+      {
+        "id": "interest",
+        "label": "Interest",
+        "fields": [
+          {
+            "id": "interest-type",
+            "label": "Interest type",
+            "type": "select",
+            "required": true
+          },
+          {
+            "id": "nda-required",
+            "label": "NDA required before disclosure",
+            "type": "boolean",
+            "required": true
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "engine": "ACE",
+  "version": "phase-c13",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Dormant regulator and authority intake."
+  },
+  "form": {
+    "sections": [
+      {
+        "id": "authority",
+        "label": "Authority Details",
+        "fields": [
+          { "id": "authority-name", "label": "Authority name", "type": "text", "required": true },
+          { "id": "contact", "label": "Contact", "type": "text", "required": true },
+          { "id": "email", "label": "Email", "type": "email", "required": true }
+        ]
+      }
+    ]
+  }
+}
