@@ -77,15 +77,17 @@ footer{
 <script>
 "use strict";
 
-const panel = document.getElementById("panel");
-const CONTACT_URL = "mailto:info@wynergy.co.uk?subject=WFSL%20Engagement%20Enquiry";
+const panel=document.getElementById("panel");
+const CONTACT_URL="mailto:info@wynergy.co.uk?subject=WFSL%20Engagement%20Enquiry";
 
-const nodes = {
+/* silent intent signal */
+function signal(node){ try{ console.debug("[ACE]",node); }catch(e){} }
+
+const nodes={
   root:{t:"Hello. Choose a topic to explore WFSL.",o:[
     ["About WFSL","about"],["Engagement","engage"],
     ["Telecoms delivery","telecoms"],["Governance & compliance","gov"]
   ]},
-
   about:{t:"WFSL builds governance-first telecoms and infrastructure capability for regulated environments.",o:[
     ["What we do","about_do"],["Why governance-first","about_why"],["Back to start","root"]
   ]},
@@ -95,7 +97,6 @@ const nodes = {
   about_why:{t:"Governance-first reduces delivery risk, regulatory exposure and operational ambiguity.",o:[
     ["Governance & compliance","gov"],["Engagement","engage"],["Back to About","about"]
   ]},
-
   engage:{t:"Engagement is structured. Disclosure is selective. Outcomes are governed.",o:[
     ["Work with us","work"],["Request NDA","nda"],["Contact WFSL","contact"],["Back to start","root"]
   ]},
@@ -111,7 +112,6 @@ const nodes = {
   nda:{t:"NDA access is issued following a verified expression of interest.",o:[
     ["Contact WFSL","contact"],["Back to start","root"]
   ]},
-
   telecoms:{t:"Delivery spans fibre, civils and managed infrastructure pathways.",o:[
     ["Fibre & civils","tel_fibre"],["Managed delivery","tel_managed"],["Back to start","root"]
   ]},
@@ -121,7 +121,6 @@ const nodes = {
   tel_managed:{t:"Managed delivery focuses on assurance, coordination and operational control.",o:[
     ["Assets & licensing","assets"],["Engagement","engage"],["Back to Telecoms","telecoms"]
   ]},
-
   gov:{t:"All activity operates within lawful, auditable governance frameworks.",o:[
     ["Regulatory alignment","gov_reg"],["Audit & assurance","gov_audit"],["Back to start","root"]
   ]},
@@ -131,47 +130,42 @@ const nodes = {
   gov_audit:{t:"Auditability and assurance are built into process and tooling.",o:[
     ["Assets & licensing","assets"],["Back to Governance","gov"]
   ]},
-
   value:{t:"WFSL improves confidence, reduces risk and enables governed scale.",o:[
     ["Assets & licensing","assets"],["Engagement","engage"],["Back to start","root"]
   ]},
   assets:{t:"WFSL develops proprietary operational assets and governance systems, disclosed selectively.",o:[
     ["Engagement","engage"],["Back to start","root"]
   ]},
-
   contact:{t:"For governed engagement, contact WFSL directly.",o:[
     ["Open email","_contact"],["Back to start","root"]
   ]}
 };
 
-function safeNode(key){
-  return nodes[key] ? key : "root";
-}
+function safe(k){ return nodes[k]?k:"root"; }
 
-function render(key){
+function render(k){
   panel.innerHTML="";
-  const k = safeNode(key);
-  if(k==="_contact"){ window.location.href = CONTACT_URL; return; }
-  const n = nodes[k];
-  const m = document.createElement("div");
+  const key=safe(k);
+  signal(key);
+  if(key==="_contact"){ window.location.href=CONTACT_URL; return; }
+  const n=nodes[key];
+  const m=document.createElement("div");
   m.className="message fade-in";
-  m.innerHTML = `<p>${n.t}</p>`;
+  m.innerHTML=`<p>${n.t}</p>`;
   panel.appendChild(m);
-
-  const c = document.createElement("div");
+  const c=document.createElement("div");
   c.className="choices";
-  n.o.forEach(([label,target])=>{
-    const b = document.createElement("button");
-    b.textContent = label;
-    if(target==="contact") b.classList.add("primary");
-    b.onclick = ()=>render(target);
+  n.o.forEach(([l,t])=>{
+    const b=document.createElement("button");
+    b.textContent=l;
+    if(t==="contact") b.classList.add("primary");
+    b.onclick=()=>render(t);
     c.appendChild(b);
   });
   panel.appendChild(c);
 }
 
-try { render("root"); }
-catch(e){ panel.innerHTML="<p>Reload to continue.</p>"; }
+render("root");
 </script>
 </body>
 </html>
