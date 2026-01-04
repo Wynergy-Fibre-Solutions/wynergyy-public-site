@@ -1,226 +1,306 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>ACE — Authoritative Company Explainer</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-:root{
-  --bg:#020617;
-  --panel:rgba(255,255,255,.06);
-  --border:rgba(255,255,255,.14);
-  --text:rgba(255,255,255,.92);
-  --muted:rgba(255,255,255,.65);
-  --accent:#2dd4ff;
-  --accent2:#1f3cff;
-  --online:#22c55e;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;min-height:100vh;
-  display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(circle at top,#0f172a,#020617);
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  color:var(--text)
-}
-.card{
-  width:100%;max-width:860px;
-  padding:22px;border-radius:18px;
-  background:var(--panel);
-  border:1px solid var(--border)
-}
-header{
-  display:flex;justify-content:space-between;align-items:center;margin-bottom:14px
-}
-.brand{display:flex;gap:12px;align-items:center}
-.brand img{
-  width:44px;height:44px;border-radius:10px;
-  object-fit:contain;background:#000
-}
-.brand h1{margin:0;font-size:20px}
-.brand span{display:block;font-size:13px;color:var(--muted)}
-.status{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--online);box-shadow:0 0 8px var(--online)}
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ACE — Authoritative Company Explainer</title>
+    <meta name="description" content="ACE: governed, deterministic company explainer for WFSL." />
+    <style>
+      :root{
+        --wfsl-blue:#1f3cff;
+        --wfsl-cyan:#2dd4ff;
+        --wfsl-violet:#7c3aed;
+        --bg0:#070a12;
+        --bg1:#0b1020;
+        --card:rgba(255,255,255,.06);
+        --card2:rgba(255,255,255,.08);
+        --border:rgba(255,255,255,.14);
+        --text:rgba(255,255,255,.92);
+        --muted:rgba(255,255,255,.62);
+        --good:#22c55e;
+        --shadow: 0 24px 60px rgba(0,0,0,.55);
+        --r: 18px;
+      }
+      *{box-sizing:border-box}
+      html,body{height:100%}
+      body{
+        margin:0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+        color:var(--text);
+        background:
+          radial-gradient(1100px 700px at 20% 15%, rgba(31,60,255,.20), transparent 60%),
+          radial-gradient(900px 650px at 70% 20%, rgba(45,212,255,.16), transparent 55%),
+          radial-gradient(1000px 700px at 55% 75%, rgba(124,58,237,.14), transparent 60%),
+          linear-gradient(180deg, var(--bg0), var(--bg1));
+        padding: 36px 18px;
+      }
+      .wrap{max-width:1040px;margin:0 auto;display:flex;justify-content:center}
+      .panel{
+        width:min(920px, 100%);
+        border-radius: 22px;
+        background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        overflow:hidden;
+      }
+      .header{
+        display:flex;align-items:center;justify-content:space-between;
+        padding: 18px 20px;
+        border-bottom:1px solid rgba(255,255,255,.08);
+        background: linear-gradient(90deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      }
+      .brand{display:flex;align-items:center;gap:12px;min-width:0}
+      .logo{
+        width:42px;height:42px;border-radius:12px;flex:0 0 auto;
+        background: rgba(255,255,255,.06);
+        border:1px solid rgba(255,255,255,.10);
+        overflow:hidden;
+        display:grid;place-items:center;
+      }
+      .logo img{width:100%;height:100%;object-fit:cover;display:block}
+      .title{min-width:0}
+      .title h1{margin:0;font-size:18px;letter-spacing:.2px}
+      .title p{margin:2px 0 0 0;font-size:12.5px;color:var(--muted)}
+      .status{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted)}
+      .dot{
+        width:9px;height:9px;border-radius:50%;
+        background: var(--good);
+        box-shadow: 0 0 0 4px rgba(34,197,94,.12);
+      }
+      .body{padding:18px 18px 12px}
+      .chatbox{
+        border-radius: var(--r);
+        border: 1px solid rgba(255,255,255,.10);
+        background: rgba(0,0,0,.20);
+        padding: 14px;
+        height: 520px;
+        overflow:auto;
+      }
+      .row{display:flex;margin:10px 0}
+      .row.ace{justify-content:flex-start}
+      .row.user{justify-content:flex-end}
+      .bubble{
+        max-width: 82%;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,.08);
+        background: rgba(255,255,255,.06);
+        line-height:1.35;
+        font-size:14px;
+        white-space:pre-wrap;
+      }
+      .row.user .bubble{
+        background: rgba(31,60,255,.16);
+        border-color: rgba(31,60,255,.35);
+      }
+      .tag{
+        margin-left:10px;
+        align-self:center;
+        font-size:12px;
+        color: rgba(45,212,255,.85);
+        user-select:none;
+      }
+      .options{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+      .btn{
+        appearance:none;border:1px solid rgba(255,255,255,.12);
+        background: rgba(255,255,255,.04);
+        color: var(--text);
+        padding: 8px 12px;
+        border-radius: 999px;
+        cursor:pointer;
+        font-size: 13px;
+      }
+      .btn:hover{border-color: rgba(45,212,255,.35)}
+      .btn:active{transform: translateY(1px)}
+      .inputbar{
+        display:flex;gap:10px;align-items:center;
+        margin-top: 12px;
+        padding: 0 2px;
+      }
+      .input{
+        flex:1;
+        display:flex;
+        border-radius: 14px;
+        border:1px solid rgba(255,255,255,.12);
+        background: rgba(0,0,0,.20);
+        padding: 10px 12px;
+      }
+      input[type="text"]{
+        width:100%;
+        border:0;outline:0;
+        background: transparent;
+        color: var(--text);
+        font-size: 14px;
+      }
+      .send{
+        flex:0 0 auto;
+        border-radius: 14px;
+        padding: 10px 16px;
+        border: 1px solid rgba(31,60,255,.45);
+        background: linear-gradient(180deg, rgba(31,60,255,.55), rgba(31,60,255,.30));
+        color: var(--text);
+        cursor:pointer;
+        font-weight:600;
+      }
+      .send:hover{border-color: rgba(45,212,255,.55)}
+      .hint{
+        margin: 8px 2px 0 2px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .footer{
+        display:flex;justify-content:space-between;gap:12px;
+        padding: 10px 18px 16px;
+        font-size:12px;color: rgba(255,255,255,.55);
+      }
+      a{color: rgba(45,212,255,.9);text-decoration:none}
+      a:hover{text-decoration:underline}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="panel" role="application" aria-label="ACE governed explainer">
+        <div class="header">
+          <div class="brand">
+            <div class="logo" aria-label="WFSL logo">
+              <img src="/assets/wfsl-logo.jpg" alt="WFSL logo" />
+            </div>
+            <div class="title">
+              <h1>ACE</h1>
+              <p>Authoritative Company Explainer</p>
+            </div>
+          </div>
+          <div class="status" aria-label="ACE status">
+            <span class="dot" aria-hidden="true"></span>
+            <span>ACE online</span>
+          </div>
+        </div>
 
-.panel{
-  min-height:360px;
-  padding:18px;
-  border-radius:14px;
-  background:rgba(0,0,0,.35);
-  border:1px solid var(--border);
-  overflow:auto;
-  pointer-events:auto
-}
-.message{margin-bottom:16px}
-.message p{margin:0 0 12px 0}
-.choices{display:flex;flex-wrap:wrap;gap:10px}
-button{
-  background:transparent;
-  border:1px solid var(--border);
-  color:var(--text);
-  padding:8px 14px;
-  border-radius:999px;
-  cursor:pointer;
-  transition:.15s
-}
-button:hover{border-color:var(--accent);color:var(--accent)}
+        <div class="body">
+          <div id="chat" class="chatbox" aria-live="polite"></div>
 
-.inputbar{
-  margin-top:14px;
-  display:flex;
-  gap:12px
-}
-input{
-  flex:1;height:44px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.35);
-  color:var(--text);
-  padding:0 14px;
-  outline:none
-}
-input:focus{border-color:var(--accent)}
-.send{
-  height:44px;
-  padding:0 18px;
-  border-radius:12px;
-  border:none;
-  font-weight:800;
-  cursor:pointer;
-  color:#000;
-  background:linear-gradient(135deg,var(--accent2),var(--accent))
-}
-.footer{
-  margin-top:14px;
-  padding-top:10px;
-  border-top:1px solid var(--border);
-  display:flex;
-  justify-content:space-between;
-  font-size:12px;
-  color:var(--muted)
-}
-</style>
-</head>
+          <div class="inputbar">
+            <div class="input">
+              <input id="text" type="text" placeholder="Type a question or select an option" autocomplete="off" />
+            </div>
+            <button id="send" class="send" type="button">Send</button>
+          </div>
 
-<body>
-<div class="card">
-  <header>
-    <div class="brand">
-      <img src="./assets/wfsl-logo.jpg" alt="WFSL logo">
-      <div>
-        <h1>ACE</h1>
-        <span>Authoritative Company Explainer</span>
+          <div class="hint">Governed responses. Free text is mapped to approved topics.</div>
+        </div>
+
+        <div class="footer">
+          <div>© Wynergy Fibre Solutions Ltd</div>
+          <div>Governed disclosure</div>
+        </div>
       </div>
     </div>
-    <div class="status"><span class="dot"></span>ACE online</div>
-  </header>
 
-  <div id="panel" class="panel"></div>
+    <script type="module">
+      import { createAceEngine } from "./engine/ace-engine.js";
+      import { ACE_TREE } from "./engine/ace-tree.js";
 
-  <div class="inputbar">
-    <input id="aceInput"
-      placeholder="Ask a question or choose an option"
-      autocomplete="off"
-      spellcheck="false">
-    <button id="sendBtn" class="send">Send</button>
-  </div>
+      const chatEl = document.getElementById("chat");
+      const textEl = document.getElementById("text");
+      const sendEl = document.getElementById("send");
 
-  <div class="footer">
-    <div>© Wynergy Fibre Solutions Ltd</div>
-    <div>Governed disclosure</div>
-  </div>
-</div>
+      const engine = createAceEngine({ tree: ACE_TREE });
 
-<script>
-"use strict";
+      /** Render helpers */
+      function scrollToBottom() {
+        chatEl.scrollTop = chatEl.scrollHeight;
+      }
 
-const panel = document.getElementById("panel");
-const input = document.getElementById("aceInput");
-const sendBtn = document.getElementById("sendBtn");
+      function addRow(who, bubbleText, tagText = "") {
+        const row = document.createElement("div");
+        row.className = "row " + who;
 
-const TREE = {
-  root:{t:"Hello. Choose a topic to explore WFSL.",o:[
-    ["About WFSL","about"],
-    ["Engagement","engage"],
-    ["Telecoms delivery","telecoms"],
-    ["Governance & compliance","gov"]
-  ]},
-  about:{t:"WFSL builds governance-first telecoms and infrastructure capability for regulated environments.",o:[
-    ["What we do","do"],
-    ["Why governance-first","why"],
-    ["Back to start","root"]
-  ]},
-  do:{t:"We design, deploy and govern delivery across fibre, civils and operational systems.",o:[
-    ["Back","about"]
-  ]},
-  why:{t:"Governance-first reduces delivery risk, regulatory exposure and ambiguity.",o:[
-    ["Back","about"]
-  ]},
-  engage:{t:"Engagement is structured. Disclosure is selective.",o:[
-    ["Work with us","work"],
-    ["Request NDA","nda"],
-    ["Back","root"]
-  ]},
-  work:{t:"WFSL works with contractors, engineers and partners via verified pathways.",o:[
-    ["Back","engage"]
-  ]},
-  nda:{t:"NDA access follows a verified expression of interest.",o:[
-    ["Back","engage"]
-  ]},
-  telecoms:{t:"Delivery spans fibre, civils and managed infrastructure.",o:[
-    ["Back","root"]
-  ]},
-  gov:{t:"All activity operates within lawful, auditable governance frameworks.",o:[
-    ["Back","root"]
-  ]}
-};
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+        bubble.textContent = bubbleText || "";
 
-function render(key){
-  const n = TREE[key] || TREE.root;
-  panel.innerHTML = "";
-  const msg = document.createElement("div");
-  msg.className = "message";
-  msg.innerHTML = `<p>${n.t}</p>`;
-  panel.appendChild(msg);
+        row.appendChild(bubble);
 
-  const choices = document.createElement("div");
-  choices.className = "choices";
-  n.o.forEach(([label,target])=>{
-    const b = document.createElement("button");
-    b.textContent = label;
-    b.onclick = ()=>render(target);
-    choices.appendChild(b);
-  });
-  panel.appendChild(choices);
-}
+        if (tagText) {
+          const tag = document.createElement("div");
+          tag.className = "tag";
+          tag.textContent = tagText;
+          row.appendChild(tag);
+        }
 
-function mapText(v){
-  v=v.toLowerCase();
-  if(v.includes("nda"))return"nda";
-  if(v.includes("govern")||v.includes("compliance"))return"gov";
-  if(v.includes("telecom")||v.includes("fibre"))return"telecoms";
-  if(v.includes("work")||v.includes("job")||v.includes("engineer"))return"engage";
-  if(v.includes("about")||v.includes("who"))return"about";
-  return"root";
-}
+        chatEl.appendChild(row);
+        scrollToBottom();
+      }
 
-function send(){
-  const v = input.value.trim();
-  if(!v)return;
-  input.value="";
-  render(mapText(v));
-}
+      function addOptions(options) {
+        if (!options || !options.length) return;
 
-sendBtn.onclick = send;
-input.addEventListener("keydown",e=>{
-  if(e.key==="Enter"){
-    e.preventDefault();
-    send();
-  }
-});
+        const row = document.createElement("div");
+        row.className = "row ace";
 
-render("root");
-input.focus();
-</script>
-</body>
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+
+        const wrap = document.createElement("div");
+        wrap.className = "options";
+
+        for (const opt of options) {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "btn";
+          b.textContent = opt.label;
+          b.addEventListener("click", () => {
+            // user chose an option
+            addRow("user", opt.label);
+            const r = engine.choose(opt.target, { via: "button" });
+            renderView(r.view, opt.label);
+          });
+          wrap.appendChild(b);
+        }
+
+        bubble.appendChild(wrap);
+        row.appendChild(bubble);
+        chatEl.appendChild(row);
+        scrollToBottom();
+      }
+
+      function renderView(view, tagLabel = "") {
+        // One ACE response per state.
+        addRow("ace", view.text, tagLabel ? String(tagLabel) : "");
+        addOptions(view.options);
+      }
+
+      /** Input handling */
+      function sendText() {
+        const v = String(textEl.value || "").trim();
+        if (!v) return;
+
+        addRow("user", v);
+        textEl.value = "";
+
+        const r = engine.text(v, { via: "text" });
+        renderView(r.view, "");
+      }
+
+      // FIX: Send button must always fire
+      sendEl.addEventListener("click", (e) => {
+        e.preventDefault();
+        sendText();
+        textEl.focus();
+      });
+
+      // FIX: Enter key must send (no dead input state)
+      textEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          sendText();
+        }
+      });
+
+      // Boot
+      const boot = engine.start();
+      renderView(boot.view, "");
+      textEl.focus();
+    </script>
+  </body>
 </html>
