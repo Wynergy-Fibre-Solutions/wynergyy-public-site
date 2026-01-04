@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ACE Risk & Disclosure Controls",
+  "type": "object",
+  "required": ["engine", "version", "governance", "disclosure_levels", "controls"],
+  "properties": {
+    "engine": { "type": "string", "const": "ACE" },
+    "version": { "type": "string" },
+    "governance": {
+      "type": "object",
+      "required": ["mode", "exposed", "note"],
+      "properties": {
+        "mode": { "type": "string", "const": "structure-only" },
+        "exposed": { "type": "boolean", "const": false },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "disclosure_levels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "risk_class", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "risk_class": { "type": "string", "enum": ["low", "medium", "high"] },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "controls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "applies_to", "status", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "applies_to": { "type": "string" },
+          "status": { "type": "string", "const": "dormant" },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

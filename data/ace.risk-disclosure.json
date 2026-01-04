@@ -1,0 +1,43 @@
+{
+  "engine": "ACE",
+  "version": "phase-c7",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Dormant risk and disclosure controls. No runtime bindings."
+  },
+  "disclosure_levels": [
+    {
+      "id": "public",
+      "label": "Public",
+      "risk_class": "low",
+      "description": "High-level narrative and non-sensitive information."
+    },
+    {
+      "id": "restricted",
+      "label": "Restricted",
+      "risk_class": "medium",
+      "description": "Limited operational detail. Requires context and intent."
+    },
+    {
+      "id": "confidential",
+      "label": "Confidential",
+      "risk_class": "high",
+      "description": "Sensitive operational or commercial information. NDA required."
+    }
+  ],
+  "controls": [
+    {
+      "id": "nda-gate",
+      "applies_to": "confidential",
+      "status": "dormant",
+      "description": "Disclosure requires executed NDA."
+    },
+    {
+      "id": "role-verification",
+      "applies_to": "restricted",
+      "status": "dormant",
+      "description": "Disclosure requires verified role and intent."
+    }
+  ]
+}
