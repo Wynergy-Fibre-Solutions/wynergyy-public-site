@@ -31,106 +31,51 @@ body{
   border:1px solid var(--border)
 }
 header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:14px
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:14px
 }
-.brand{
-  display:flex;
-  gap:12px;
-  align-items:center
-}
+.brand{display:flex;gap:12px;align-items:center}
 .brand img{
   width:44px;height:44px;border-radius:10px;object-fit:contain;background:#000
 }
 .brand h1{margin:0;font-size:20px}
 .brand span{display:block;font-size:13px;color:var(--muted)}
-.status{
-  display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)
-}
+.status{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
 .dot{
   width:8px;height:8px;border-radius:50%;
-  background:var(--online);
-  box-shadow:0 0 8px var(--online)
+  background:var(--online);box-shadow:0 0 8px var(--online)
 }
 .panel{
-  min-height:360px;
-  padding:18px;
-  border-radius:14px;
-  background:rgba(0,0,0,.35);
-  border:1px solid var(--border);
-  overflow:auto
+  min-height:360px;padding:18px;border-radius:14px;
+  background:rgba(0,0,0,.35);border:1px solid var(--border);overflow:auto
 }
 .message{margin-bottom:16px}
 .message p{margin:0 0 12px 0}
 .choices{display:flex;flex-wrap:wrap;gap:10px}
 button{
-  background:transparent;
-  border:1px solid var(--border);
-  color:var(--text);
-  padding:8px 14px;
-  border-radius:999px;
-  cursor:pointer;
-  transition:.15s;
-  user-select:none
+  background:transparent;border:1px solid var(--border);color:var(--text);
+  padding:8px 14px;border-radius:999px;cursor:pointer;transition:.15s
 }
-button:hover{
-  border-color:var(--accent);
-  color:var(--accent);
-  box-shadow:0 0 0 1px rgba(45,212,255,.15)
-}
+button:hover{border-color:var(--accent);color:var(--accent)}
 button.primary{
   background:linear-gradient(135deg,var(--accent2),var(--accent));
   color:#000;border:none;font-weight:700
 }
 .footer{
-  margin-top:14px;
-  padding-top:10px;
-  border-top:1px solid var(--border);
-  display:flex;
-  justify-content:space-between;
-  font-size:12px;
-  color:var(--muted)
+  margin-top:14px;padding-top:10px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;font-size:12px;color:var(--muted)
 }
-.fade-in{animation:fade .12s ease}
-@keyframes fade{from{opacity:.85}to{opacity:1}}
-
-.inputbar{
-  margin-top:14px;
-  display:flex;
-  gap:12px;
-  align-items:center
+form{margin-top:14px;display:flex;gap:12px}
+input{
+  flex:1;height:44px;border-radius:12px;border:1px solid var(--border);
+  background:rgba(0,0,0,.35);color:var(--text);padding:0 14px;outline:none
 }
-.inputbar input{
-  flex:1;
-  height:44px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.35);
-  color:var(--text);
-  padding:0 14px;
-  outline:none
-}
-.inputbar input:focus{
-  border-color:var(--accent);
-  box-shadow:0 0 0 2px rgba(45,212,255,.10)
-}
-.inputbar .send{
-  height:44px;
-  padding:0 18px;
-  border-radius:12px;
-  border:none;
-  cursor:pointer;
-  font-weight:800;
-  color:#000;
+input:focus{border-color:var(--accent)}
+.send{
+  height:44px;padding:0 18px;border-radius:12px;border:none;
+  font-weight:800;color:#000;cursor:pointer;
   background:linear-gradient(135deg,var(--accent2),var(--accent))
 }
-.hint{
-  margin-top:8px;
-  font-size:12px;
-  color:var(--muted)
-}
+.hint{margin-top:8px;font-size:12px;color:var(--muted)}
 </style>
 </head>
 
@@ -147,22 +92,20 @@ button.primary{
     <div class="status"><span class="dot"></span>ACE online</div>
   </header>
 
-  <div id="panel" class="panel" aria-live="polite"></div>
+  <div id="panel" class="panel"></div>
 
-  <div class="inputbar">
-    <input
-      id="aceInput"
+  <form id="aceForm" autocomplete="off">
+    <input id="aceInput"
       type="text"
-      placeholder="Ask a question or select an option"
+      placeholder="Ask a question or choose an option"
       autocomplete="off"
       autocorrect="off"
       autocapitalize="off"
-      spellcheck="false"
-      aria-label="ACE input"
-    >
-    <button id="aceSend" class="send" type="button">Send</button>
-  </div>
-  <div class="hint">Tip: use the buttons for fastest answers. Free text is interpreted into the closest governed topic.</div>
+      spellcheck="false">
+    <button class="send" type="submit">Send</button>
+  </form>
+
+  <div class="hint">Governed responses. Free text is mapped to approved topics.</div>
 
   <div class="footer">
     <div>© Wynergy Fibre Solutions Ltd</div>
@@ -173,185 +116,78 @@ button.primary{
 <script>
 "use strict";
 
-const panel = document.getElementById("panel");
-const input = document.getElementById("aceInput");
-const sendBtn = document.getElementById("aceSend");
+const panel=document.getElementById("panel");
+const input=document.getElementById("aceInput");
+const form=document.getElementById("aceForm");
 
-const CONTACT_URL = "mailto:info@wynergy.co.uk?subject=WFSL%20Engagement%20Enquiry";
-
-/* silent intent signal */
-function signal(node){
-  try{ console.debug("[ACE]", node); }catch(e){}
-}
-
-/* ===== CONFIG: TREE ===== */
-const TREE = {
-  root:{t:"Hello. Choose a topic to explore WFSL.",o:[
-    ["About WFSL","about"],
-    ["Engagement","engage"],
-    ["Telecoms delivery","telecoms"],
-    ["Governance & compliance","gov"]
-  ]},
-
-  about:{t:"WFSL builds governance-first telecoms and infrastructure capability for regulated environments.",o:[
-    ["What we do","about_do"],
-    ["Why governance-first","about_why"],
-    ["Back to start","root"]
-  ]},
-  about_do:{t:"We design, deploy and govern delivery across fibre, civils and operational systems.",o:[
-    ["Business value","value"],
-    ["Telecoms delivery","telecoms"],
-    ["Back to About","about"]
-  ]},
-  about_why:{t:"Governance-first reduces delivery risk, regulatory exposure and operational ambiguity.",o:[
-    ["Governance & compliance","gov"],
-    ["Engagement","engage"],
-    ["Back to About","about"]
-  ]},
-
-  engage:{t:"Engagement is structured. Disclosure is selective. Outcomes are governed.",o:[
-    ["Work with us","work"],
-    ["Request NDA","nda"],
-    ["Contact WFSL","contact"],
-    ["Back to start","root"]
-  ]},
-  work:{t:"WFSL works with contractors, engineers, partners and clients through verified pathways.",o:[
-    ["Contractors & engineers","work_ce"],
-    ["Partners & clients","work_pc"],
-    ["Back to Engagement","engage"]
-  ]},
-  work_ce:{t:"Contractors and engineers engage via compliance-aligned intake and verification.",o:[
-    ["Contact WFSL","contact"],
-    ["Back to start","root"]
-  ]},
-  work_pc:{t:"Partners and clients engage for governed delivery, capability or licensing.",o:[
-    ["Contact WFSL","contact"],
-    ["Back to start","root"]
-  ]},
-  nda:{t:"NDA access is issued following a verified expression of interest.",o:[
-    ["Contact WFSL","contact"],
-    ["Back to start","root"]
-  ]},
-
-  telecoms:{t:"Delivery spans fibre, civils and managed infrastructure pathways.",o:[
-    ["Fibre & civils","tel_fibre"],
-    ["Managed delivery","tel_managed"],
-    ["Back to start","root"]
-  ]},
-  tel_fibre:{t:"Fibre and civils delivery is structured, verified and governed end-to-end.",o:[
-    ["Business value","value"],
-    ["Governance & compliance","gov"],
-    ["Back to Telecoms","telecoms"]
-  ]},
-  tel_managed:{t:"Managed delivery focuses on assurance, coordination and operational control.",o:[
-    ["Assets & licensing","assets"],
-    ["Engagement","engage"],
-    ["Back to Telecoms","telecoms"]
-  ]},
-
-  gov:{t:"All activity operates within lawful, auditable governance frameworks.",o:[
-    ["Regulatory alignment","gov_reg"],
-    ["Audit & assurance","gov_audit"],
-    ["Back to start","root"]
-  ]},
-  gov_reg:{t:"Delivery aligns with UK telecoms and infrastructure regulatory frameworks, including Ofcom.",o:[
-    ["Audit & assurance","gov_audit"],
-    ["Back to Governance","gov"]
-  ]},
-  gov_audit:{t:"Auditability and assurance are built into process and tooling.",o:[
-    ["Assets & licensing","assets"],
-    ["Back to Governance","gov"]
-  ]},
-
-  value:{t:"WFSL improves confidence, reduces risk and enables governed scale.",o:[
-    ["Assets & licensing","assets"],
-    ["Engagement","engage"],
-    ["Back to start","root"]
-  ]},
-  assets:{t:"WFSL develops proprietary operational assets and governance systems, disclosed selectively.",o:[
-    ["Engagement","engage"],
-    ["Back to start","root"]
-  ]},
-
-  contact:{t:"For governed engagement, contact WFSL directly.",o:[
-    ["Open email","_contact"],
-    ["Back to start","root"]
-  ]}
+const TREE={
+root:{t:"Hello. Choose a topic to explore WFSL.",o:[
+["About WFSL","about"],["Engagement","engage"],["Telecoms delivery","telecoms"],["Governance & compliance","gov"]
+]},
+about:{t:"WFSL builds governance-first telecoms and infrastructure capability for regulated environments.",o:[
+["What we do","about_do"],["Why governance-first","about_why"],["Back to start","root"]
+]},
+about_do:{t:"We design, deploy and govern delivery across fibre, civils and operational systems.",o:[
+["Business value","value"],["Telecoms delivery","telecoms"],["Back","about"]
+]},
+about_why:{t:"Governance-first reduces delivery risk, regulatory exposure and ambiguity.",o:[
+["Governance & compliance","gov"],["Back","about"]
+]},
+engage:{t:"Engagement is structured. Disclosure is selective.",o:[
+["Work with us","work"],["Request NDA","nda"],["Back","root"]
+]},
+work:{t:"WFSL works with contractors, engineers and partners via verified pathways.",o:[
+["Back","engage"]
+]},
+nda:{t:"NDA access follows a verified expression of interest.",o:[
+["Back","engage"]
+]},
+telecoms:{t:"Delivery spans fibre, civils and managed infrastructure.",o:[
+["Business value","value"],["Back","root"]
+]},
+gov:{t:"All activity operates within lawful, auditable governance frameworks.",o:[
+["Back","root"]
+]},
+value:{t:"WFSL reduces risk and enables governed scale.",o:[
+["Back","root"]
+]}
 };
-/* ===== END CONFIG ===== */
-
-function safe(key){
-  return TREE[key] ? key : "root";
-}
 
 function render(key){
-  const k = safe(key);
-  signal(k);
-
-  if(k === "_contact"){
-    window.location.href = CONTACT_URL;
-    return;
-  }
-
-  panel.innerHTML = "";
-  const n = TREE[k];
-
-  const m = document.createElement("div");
-  m.className = "message fade-in";
-  m.innerHTML = `<p>${n.t}</p>`;
+  const n=TREE[key]||TREE.root;
+  panel.innerHTML="";
+  const m=document.createElement("div");
+  m.className="message";
+  m.innerHTML=`<p>${n.t}</p>`;
   panel.appendChild(m);
-
-  const c = document.createElement("div");
-  c.className = "choices";
-
-  n.o.forEach(([label,target])=>{
-    const b = document.createElement("button");
-    b.textContent = label;
-    if(target === "contact") b.classList.add("primary");
-    b.addEventListener("click", ()=>render(target));
+  const c=document.createElement("div");
+  c.className="choices";
+  n.o.forEach(([l,t])=>{
+    const b=document.createElement("button");
+    b.type="button";
+    b.textContent=l;
+    b.onclick=()=>render(t);
     c.appendChild(b);
   });
-
   panel.appendChild(c);
 }
 
-function normalise(s){
-  return (s || "").toLowerCase().replace(/[^a-z0-9\s&]/g," ").replace(/\s+/g," ").trim();
+function mapText(t){
+  t=t.toLowerCase();
+  if(t.includes("nda"))return"nda";
+  if(t.includes("govern")||t.includes("compliance"))return"gov";
+  if(t.includes("telecom")||t.includes("fibre"))return"telecoms";
+  if(t.includes("work")||t.includes("job")||t.includes("engineer"))return"engage";
+  if(t.includes("value")||t.includes("worth"))return"value";
+  if(t.includes("about")||t.includes("who"))return"about";
+  return"root";
 }
 
-/* governed free-text mapping: closest topic only */
-function mapTextToNode(text){
-  const t = normalise(text);
-
-  if(!t) return "root";
-
-  const isGreeting = ["hi","hello","hey","good morning","good afternoon","good evening"].some(x=>t===x);
-  if(isGreeting) return "root";
-
-  if(t.includes("nda")) return "nda";
-  if(t.includes("contact") || t.includes("email") || t.includes("enquiry")) return "contact";
-  if(t.includes("govern") || t.includes("compliance") || t.includes("audit") || t.includes("law") || t.includes("ofcom")) return "gov";
-  if(t.includes("telecom") || t.includes("fibre") || t.includes("fiber") || t.includes("civils") || t.includes("infrastructure") || t.includes("delivery")) return "telecoms";
-  if(t.includes("work with") || t.includes("partner") || t.includes("client") || t.includes("engineer") || t.includes("contractor") || t.includes("jobs")) return "engage";
-  if(t.includes("value") || t.includes("benefit") || t.includes("improve") || t.includes("worth")) return "value";
-  if(t.includes("asset") || t.includes("licence") || t.includes("license")) return "assets";
-  if(t.includes("what is wfsl") || t.includes("who are you") || t.includes("who are they") || t.includes("about")) return "about";
-
-  return "root";
-}
-
-function handleSend(){
-  const v = (input.value || "").trim();
-  input.value = "";
-  render(mapTextToNode(v));
-}
-
-sendBtn.addEventListener("click", handleSend);
-input.addEventListener("keydown", (e)=>{
-  if(e.key === "Enter"){
-    e.preventDefault();
-    handleSend();
-  }
+form.addEventListener("submit",e=>{
+  e.preventDefault();
+  const v=input.value.trim();
+  input.value="";
+  render(mapText(v));
 });
 
 render("root");
