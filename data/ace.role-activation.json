@@ -1,0 +1,17 @@
+{
+  "engine": "ACE",
+  "version": "phase-c4",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Role activation flags. All disabled by default."
+  },
+  "roles": [
+    { "id": "client", "active": false },
+    { "id": "engineer", "active": false },
+    { "id": "investor", "active": false },
+    { "id": "technology-partner", "active": false },
+    { "id": "regulator", "active": false },
+    { "id": "general", "active": false }
+  ]
+}

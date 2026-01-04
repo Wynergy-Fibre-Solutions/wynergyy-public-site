@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ACE Role Activation Flags",
+  "type": "object",
+  "required": ["engine", "version", "governance", "roles"],
+  "properties": {
+    "engine": { "type": "string", "const": "ACE" },
+    "version": { "type": "string" },
+    "governance": {
+      "type": "object",
+      "required": ["mode", "exposed", "note"],
+      "properties": {
+        "mode": { "type": "string", "const": "structure-only" },
+        "exposed": { "type": "boolean", "const": false },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "active"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9\\-]+$" },
+          "active": { "type": "boolean", "const": false }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
