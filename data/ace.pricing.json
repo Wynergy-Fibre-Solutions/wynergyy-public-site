@@ -1,0 +1,9 @@
+{
+  "engine":"ACE",
+  "version":"phase-c20",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Dormant pricing models."},
+  "models":[
+    {"id":"licence-fee","status":"dormant","description":"Capability licence pricing."},
+    {"id":"usage-based","status":"dormant","description":"Usage-based pricing model."}
+  ]
+}

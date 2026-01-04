@@ -1,0 +1,34 @@
+{
+  "$schema":"http://json-schema.org/draft-07/schema#",
+  "title":"ACE Pricing Framework (Dormant)",
+  "type":"object",
+  "required":["engine","version","governance","models"],
+  "properties":{
+    "engine":{"type":"string","const":"ACE"},
+    "version":{"type":"string"},
+    "governance":{
+      "type":"object",
+      "required":["mode","exposed","note"],
+      "properties":{
+        "mode":{"type":"string","const":"structure-only"},
+        "exposed":{"type":"boolean","const":false},
+        "note":{"type":"string"}
+      },
+      "additionalProperties":false
+    },
+    "models":{
+      "type":"array",
+      "items":{
+        "type":"object",
+        "required":["id","status","description"],
+        "properties":{
+          "id":{"type":"string"},
+          "status":{"type":"string","const":"dormant"},
+          "description":{"type":"string"}
+        },
+        "additionalProperties":false
+      }
+    }
+  },
+  "additionalProperties":false
+}

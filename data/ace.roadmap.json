@@ -1,0 +1,9 @@
+{
+  "engine":"ACE",
+  "version":"phase-c23",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Dormant product roadmap."},
+  "milestones":[
+    {"id":"role-activation","status":"dormant","description":"Activate role-based navigation."},
+    {"id":"evidence-exposure","status":"dormant","description":"Expose evidence under NDA."}
+  ]
+}
