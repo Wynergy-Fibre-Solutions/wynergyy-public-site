@@ -47,9 +47,8 @@ async function appendEvent(event) {
       kind: "ace_runtime_event_log",
       version: "1.0.0",
       created_utc: nowUtcIso(),
-      events: []
+      events: [event]
     };
-    reset.events.push(event);
     await writeFile(EVENT_LOG_PATH, JSON.stringify(reset, null, 2), "utf8");
     return;
   }
@@ -63,7 +62,12 @@ function send(res, status, headers, body) {
 }
 
 function sendJson(res, status, obj) {
-  send(res, status, { "Content-Type": "application/json; charset=utf-8" }, JSON.stringify(obj, null, 2));
+  send(
+    res,
+    status,
+    { "Content-Type": "application/json; charset=utf-8" },
+    JSON.stringify(obj, null, 2)
+  );
 }
 
 function sendHtml(res, status, html) {
@@ -74,20 +78,13 @@ async function readStatic(filePath) {
   return readFile(join(ROOT, filePath), "utf8");
 }
 
-function isAllowedMethod(req, allowed) {
-  return allowed.includes((req.method || "").toUpperCase());
-}
-
 function collectBody(req, maxBytes = 64 * 1024) {
   return new Promise((resolve, reject) => {
     const chunks = [];
     let size = 0;
     req.on("data", (chunk) => {
       size += chunk.length;
-      if (size > maxBytes) {
-        reject(new Error("Body too large"));
-        return;
-      }
+      if (size > maxBytes) reject(new Error("body_too_large"));
       chunks.push(chunk);
     });
     req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
@@ -96,11 +93,10 @@ function collectBody(req, maxBytes = 64 * 1024) {
 }
 
 function normaliseMessage(input) {
-  const text = typeof input === "string" ? input : "";
-  const trimmed = text.trim();
-  if (trimmed.length < 1) return { ok: false, reason: "empty" };
-  if (trimmed.length > 2000) return { ok: false, reason: "too_long" };
-  return { ok: true, value: trimmed };
+  const text = typeof input === "string" ? input.trim() : "";
+  if (!text) return { ok: false, reason: "empty" };
+  if (text.length > 2000) return { ok: false, reason: "too_long" };
+  return { ok: true, value: text };
 }
 
 function extractUrls(text) {
@@ -109,11 +105,8 @@ function extractUrls(text) {
   const matches = text.match(re) || [];
   for (const m of matches) {
     try {
-      const u = new URL(m);
-      urls.push(u.toString());
-    } catch {
-      // ignore
-    }
+      urls.push(new URL(m).toString());
+    } catch {}
   }
   return Array.from(new Set(urls)).slice(0, 10);
 }
@@ -123,34 +116,12 @@ const server = http.createServer(async (req, res) => {
     const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
     const path = url.pathname;
 
-    if (path === "/" && isAllowedMethod(req, ["GET"])) {
-      const html = await readStatic("index.html").catch(() => "");
-      if (!html) {
-        sendHtml(res, 200, "<!doctype html><html><body><h1>wynergyy-public-site</h1></body></html>");
-        return;
-      }
-      sendHtml(res, 200, html);
+    if (path === "/api/health" && req.method === "GET") {
+      sendJson(res, 200, { ok: true, time_utc: nowUtcIso() });
       return;
     }
 
-    if (path === "/status" && isAllowedMethod(req, ["GET"])) {
-      const html = await readStatic("status.html");
-      sendHtml(res, 200, html);
-      return;
-    }
-
-    if (path === "/principles" && isAllowedMethod(req, ["GET"])) {
-      const html = await readStatic("principles.html");
-      sendHtml(res, 200, html);
-      return;
-    }
-
-    if (path === "/api/health" && isAllowedMethod(req, ["GET"])) {
-      sendJson(res, 200, { ok: true, service: "wynergyy-public-site", time_utc: nowUtcIso() });
-      return;
-    }
-
-    if (path === "/api/message" && isAllowedMethod(req, ["POST"])) {
+    if (path === "/api/message" && req.method === "POST") {
       const raw = await collectBody(req);
       const parsed = safeJsonParse(raw);
       if (!parsed.ok) {
@@ -160,39 +131,30 @@ const server = http.createServer(async (req, res) => {
 
       const msg = normaliseMessage(parsed.value?.message);
       if (!msg.ok) {
-        sendJson(res, 400, { ok: false, error: "invalid_message", reason: msg.reason });
+        sendJson(res, 400, { ok: false, error: msg.reason });
         return;
       }
 
-      const id = randomUUID();
-      const urls = extractUrls(msg.value);
-
       const event = {
-        id,
+        id: randomUUID(),
         kind: "public_message_received",
         time_utc: nowUtcIso(),
-        source: "public_site",
         message: msg.value,
-        urls
+        urls: extractUrls(msg.value)
       };
 
       await appendEvent(event);
 
-      sendJson(res, 200, {
-        ok: true,
-        id,
-        received_utc: event.time_utc,
-        urls_detected: urls.length
-      });
+      sendJson(res, 200, { ok: true, id: event.id });
       return;
     }
 
     sendJson(res, 404, { ok: false, error: "not_found" });
-  } catch (err) {
+  } catch {
     sendJson(res, 500, { ok: false, error: "server_error" });
   }
 });
 
-server.listen(PORT, () => {
-  // intentional: no console noise required for evidential repo
-});
+server.listen(PORT, "127.0.0.1");
+
+console.log(`ACE message intake listening on http://127.0.0.1:${PORT}`);
