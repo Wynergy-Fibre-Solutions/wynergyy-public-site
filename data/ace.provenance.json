@@ -1,0 +1,41 @@
+{
+  "engine": "ACE",
+  "version": "phase-c6",
+  "governance": {
+    "mode": "structure-only",
+    "exposed": false,
+    "note": "Dormant provenance and audit metadata. No runtime bindings."
+  },
+  "records": [
+    {
+      "id": "core-engine",
+      "scope": "engine",
+      "status": "dormant",
+      "source": "internal",
+      "owner": "WFSL",
+      "purpose": "Deterministic governed interaction engine",
+      "last_reviewed": null,
+      "audit_notes": []
+    },
+    {
+      "id": "capability-tree",
+      "scope": "structure",
+      "status": "dormant",
+      "source": "internal",
+      "owner": "WFSL",
+      "purpose": "Future capability and role mapping",
+      "last_reviewed": null,
+      "audit_notes": []
+    },
+    {
+      "id": "evidence-hooks",
+      "scope": "structure",
+      "status": "dormant",
+      "source": "internal",
+      "owner": "WFSL",
+      "purpose": "Evidence references and artefact placeholders",
+      "last_reviewed": null,
+      "audit_notes": []
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ACE Provenance & Audit Metadata",
+  "type": "object",
+  "required": ["engine", "version", "governance", "records"],
+  "properties": {
+    "engine": { "type": "string", "const": "ACE" },
+    "version": { "type": "string" },
+    "governance": {
+      "type": "object",
+      "required": ["mode", "exposed", "note"],
+      "properties": {
+        "mode": { "type": "string", "const": "structure-only" },
+        "exposed": { "type": "boolean", "const": false },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "scope", "status", "source", "owner", "purpose"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9\\-]+$" },
+          "scope": { "type": "string" },
+          "status": { "type": "string", "const": "dormant" },
+          "source": { "type": "string" },
+          "owner": { "type": "string" },
+          "purpose": { "type": "string" },
+          "last_reviewed": { "type": ["string", "null"] },
+          "audit_notes": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
