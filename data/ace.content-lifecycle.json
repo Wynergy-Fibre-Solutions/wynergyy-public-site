@@ -1,0 +1,6 @@
+{
+  "engine":"ACE",
+  "version":"phase-c17",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Dormant lifecycle states."},
+  "states":["draft","reviewed","approved","retired"]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema":"http://json-schema.org/draft-07/schema#",
+  "title":"ACE Trust Signals (Dormant)",
+  "type":"object",
+  "required":["engine","version","governance","signals"],
+  "properties":{
+    "engine":{"type":"string","const":"ACE"},
+    "version":{"type":"string"},
+    "governance":{
+      "type":"object",
+      "required":["mode","exposed","note"],
+      "properties":{
+        "mode":{"type":"string","const":"structure-only"},
+        "exposed":{"type":"boolean","const":false},
+        "note":{"type":"string"}
+      },
+      "additionalProperties":false
+    },
+    "signals":{
+      "type":"array",
+      "items":{
+        "type":"object",
+        "required":["id","label","status"],
+        "properties":{
+          "id":{"type":"string","pattern":"^[a-z0-9\\-]+$"},
+          "label":{"type":"string"},
+          "status":{"type":"string","const":"dormant"},
+          "reference":{"type":"string"}
+        },
+        "additionalProperties":false
+      }
+    }
+  },
+  "additionalProperties":false
+}

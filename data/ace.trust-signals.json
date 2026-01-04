@@ -1,0 +1,10 @@
+{
+  "engine":"ACE",
+  "version":"phase-c16",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Dormant trust signals."},
+  "signals":[
+    {"id":"ofcom-alignment","label":"Ofcom alignment","status":"dormant","reference":"policy"},
+    {"id":"audit-ready","label":"Audit-ready processes","status":"dormant","reference":"internal"},
+    {"id":"governed-disclosure","label":"Governed disclosure","status":"dormant","reference":"process"}
+  ]
+}

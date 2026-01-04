@@ -1,0 +1,9 @@
+{
+  "engine":"ACE",
+  "version":"phase-c18",
+  "governance":{"mode":"structure-only","exposed":false,"note":"Dormant access gates."},
+  "gates":[
+    {"id":"role-verified","status":"dormant","rule":"role_verified==true"},
+    {"id":"nda-executed","status":"dormant","rule":"nda==true"}
+  ]
+}
