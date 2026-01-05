@@ -1,8 +1,16 @@
-# Temporary hold – pending classification
-EVIDENCE-HANDOVER-PROTOCOL.md
-EXTERNAL-REVIEW-BOUNDARIES.md
-INSPECTION-WALKTHROUGH.md
-LIMITS-OF-AUTOMATION.md
+# Dependency directories
+node_modules/
 
-# Private internal planning (must never be published)
-ROADMAP-PRIVATE.md
+# Vercel deployment output
+.vercel/
+
+# Runtime data (generated, non-deterministic)
+data/runtime/
+data/*.json
+
+# Logs and temporary files
+*.log
+
+# OS noise
+.DS_Store
+Thumbs.db
