@@ -1,396 +1,163 @@
-\# WFSL — External Documentation Index
+WFSL External Documentation Read-Me
+Purpose of this Repository
 
+This repository contains a curated set of documents describing how Wynergy Fibre Solutions Ltd (WFSL) designs, operates, and exposes technical evidence relating to its systems.
 
+It exists to support:
 
-\## Purpose
+Independent inspection
 
+Audit and due diligence
 
+Evidence review
 
-This document provides a single, neutral entry point to WFSL’s externally reviewable materials.
+Informed third-party assessment
 
+It does not exist to persuade, certify, or assert authority.
 
+What This Repository Is
 
-It does not assert compliance, capability, or authority.
+This repository is a documentation and evidence interface.
 
+It describes:
 
+How WFSL systems record activity
 
-It exists solely to help third parties locate, interpret, and scope the documentation that WFSL makes available for inspection, review, or due diligence.
+How evidence is produced at runtime
 
+How artefacts can be inspected and replayed
 
+How disclosure is controlled and scoped
 
----
+All material is provided in human-readable, non-proprietary formats.
 
+What This Repository Is Not
 
+This repository is not:
 
-\## How to Use This Index
+A compliance certification
 
+A regulatory submission
 
+A legal opinion
 
-Each document listed below has a specific and limited role.
+A product specification
 
+A marketing site
 
+Nothing contained here should be interpreted as legal advice, regulatory approval, or fitness for purpose.
 
-Documents are intended to be read independently.  
+Interpretation remains the responsibility of the reader.
 
-No document requires acceptance of another document’s conclusions.
+How to Read These Documents
 
+Readers are strongly advised not to skim or cherry-pick.
 
+The documents are structured intentionally and should be read in order, starting with the External Index.
 
-Where evidence is referenced, it is produced at runtime or recorded at the time of operation.
+The recommended reading flow is:
 
+WFSL External Index
+Provides the authoritative list and order of documents.
 
+Inspection Walkthrough
+Describes how a third party can independently examine artefacts.
 
----
+Disclosure Posture
+Defines what WFSL will and will not disclose.
 
+Supporting Documents
+Referenced as needed for deeper inspection.
 
+Skipping ahead may result in misinterpretation.
 
-\## Core Positioning Documents
+Evidence Philosophy
 
+WFSL systems are designed around a simple principle:
 
+Evidence is generated at the time events occur, not reconstructed later.
 
-\### WFSL-SYSTEM-POSITIONING.md
+As a result:
 
+Logs are append-only
 
+Artefacts are sealed
 
-Defines how WFSL positions its systems and infrastructure.
+Replay is possible without WFSL involvement
 
+Historical records are not amended
 
+If evidence does not exist, it is treated as non-existent rather than inferred.
 
-Focus:
+Automation Boundaries
 
-\- What the systems are designed to do
+WFSL systems automate process, not judgement.
 
-\- What they are explicitly not designed to do
+Automation is used to:
 
-\- How WFSL avoids implied authority or silent enforcement
+Record
 
+Order
 
+Seal
 
-This document is descriptive, not persuasive.
+Preserve
 
+Replay
 
+Automation is not used to:
 
----
+Make legal determinations
 
+Infer intent
 
+Assess compliance
 
-\### REGULATORY-ALIGNMENT.md
+Replace human accountability
 
+Where judgement is required, systems halt and present evidence for human decision.
 
+Use by Third Parties
 
-Describes how WFSL technical mechanisms align with common regulatory expectations.
+Third parties may use this repository to:
 
+Understand system design choices
 
+Verify disclosed artefacts
 
-Focus:
+Assess evidence handling practices
 
-\- Accountability
+Conduct independent review
 
-\- Traceability
+WFSL does not control conclusions drawn by third parties.
 
-\- Integrity
+Once evidence is disclosed, it stands as issued.
 
-\- Inspection readiness
+Change Control
 
+Documents in this repository are versioned.
 
+Material changes are:
 
-This document does not claim statutory compliance or regulatory approval.
+Documented
 
+Non-retroactive
 
+Traceable
 
----
+Historical documents describe historical systems and remain valid for the period they represent.
 
+Contact and Scope
 
+This repository represents the maximum intended public and request-based exposure of WFSL system documentation.
 
-\## Compliance and Evidence Interfaces
+Additional disclosure, if any, is governed by the Disclosure Posture document and is handled on a case-by-case basis.
 
+Closing Note
 
+This repository is designed to make truth inspectable, not to manage perception.
 
-\### COMPLIANCE-INTERFACE-STATEMENT.md
+Clarity is intentional.
+Silence is deliberate.
 
-
-
-Explains how WFSL systems expose information for inspection without asserting outcomes.
-
-
-
-Focus:
-
-\- Interface boundaries
-
-\- Evidence visibility
-
-\- Non-contractual posture
-
-
-
-This document exists to prevent misinterpretation of system outputs.
-
-
-
----
-
-
-
-\### EVIDENCE-CATALOGUE.md
-
-
-
-Lists the types of evidence WFSL systems can produce.
-
-
-
-Focus:
-
-\- Event logs
-
-\- Sealing artefacts
-
-\- Replay outputs
-
-\- Attribution records
-
-
-
-This document is an index, not a guarantee of availability.
-
-
-
----
-
-
-
-\## Operating Doctrine
-
-
-
-\### WFSL-OPERATING-PRINCIPLES.md
-
-
-
-Defines internal operating principles that guide system design and behaviour.
-
-
-
-Focus:
-
-\- Explicit decision boundaries
-
-\- Human responsibility
-
-\- Failure handling
-
-\- Change discipline
-
-
-
-This document explains intent, not enforcement.
-
-
-
----
-
-
-
-\## Phase-Based External Artefacts
-
-
-
-\### PHASE-15-COMMERCIAL-FORM.md
-
-
-
-Describes WFSL’s commercial posture and engagement form.
-
-
-
-Focus:
-
-\- How WFSL presents itself commercially
-
-\- What it does not represent itself as
-
-
-
----
-
-
-
-\### PHASE-16-EXTERNAL-PRESENTATION.md
-
-
-
-Defines how WFSL presents systems externally.
-
-
-
-Focus:
-
-\- Language discipline
-
-\- Avoidance of over-claim
-
-\- Clarity for non-technical audiences
-
-
-
----
-
-
-
-\### PHASE-17-STRATEGIC-OPTIONS.md
-
-
-
-Outlines strategic paths available to WFSL.
-
-
-
-Focus:
-
-\- Optionality
-
-\- Non-commitment
-
-\- Controlled evolution
-
-
-
-This document does not declare intent.
-
-
-
----
-
-
-
-\### PHASE-18-LONG-TERM-INTEGRITY.md
-
-
-
-Describes how WFSL preserves long-term integrity of records and evidence.
-
-
-
-Focus:
-
-\- Historical consistency
-
-\- Non-retroactive change
-
-\- Evidence durability
-
-
-
----
-
-
-
-\### PHASE-19-EXTERNALISATION-PATHS.md
-
-
-
-Defines how internal systems may be exposed externally over time.
-
-
-
-Focus:
-
-\- Controlled exposure
-
-\- Boundary preservation
-
-\- Risk avoidance
-
-
-
----
-
-
-
-\## Disclosure and Inspection
-
-
-
-\### PHASE-23-DISCLOSURE-POSTURE.md
-
-
-
-Defines how WFSL discloses information to third parties.
-
-
-
-Focus:
-
-\- Controlled transparency
-
-\- Scope discipline
-
-\- Non-performative disclosure
-
-
-
----
-
-
-
-\### PHASE-24-INSPECTION-WALKTHROUGH.md
-
-
-
-Provides a step-by-step walkthrough for independent inspection.
-
-
-
-Focus:
-
-\- What an inspector can request
-
-\- What artefacts exist
-
-\- How verification can occur without WFSL mediation
-
-
-
----
-
-
-
-\## Important Notes
-
-
-
-\- No document in this repository constitutes legal advice.
-
-\- No document asserts compliance, certification, or regulatory approval.
-
-\- Interpretation remains the responsibility of the reader.
-
-\- Historical artefacts are not amended retroactively.
-
-
-
-Where evidence exists, it stands as recorded.
-
-
-
----
-
-
-
-\## Closing Statement
-
-
-
-WFSL documentation is designed to support verification, not persuasion.
-
-
-
-Readers are encouraged to inspect, question, and form their own conclusions.
-
-
-
-\*\*End of Document\*\*
-
-
-
+End of Document
