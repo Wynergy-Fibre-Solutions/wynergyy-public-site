@@ -1,23 +1,15 @@
-name: CI
+name: Integrity Check
 
 on:
   pull_request:
-    branches:
-      - MAIN
-  push:
-    branches:
-      - MAIN
+    branches: [MAIN]
 
 jobs:
   integrity:
-    name: Repository integrity check
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Verify repository structure
+      - uses: actions/checkout@v4
+      - name: Verify repository checkout
         run: |
-          echo "Repository checked out successfully."
+          echo "Repository checked out successfully"
           ls -la
